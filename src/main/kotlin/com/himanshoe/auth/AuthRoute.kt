@@ -6,7 +6,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Application.authRoute(authRepository: AuthRepository) {
+fun Application.authRoutes(authRepository: AuthRepository) {
 
     routing {
 

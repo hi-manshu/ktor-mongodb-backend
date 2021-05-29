@@ -3,7 +3,7 @@ package com.himanshoe.auth.repository
 import com.himanshoe.auth.AuthRequest
 import com.himanshoe.base.auth.JwtConfig
 import com.himanshoe.base.http.ExceptionHandler
-import com.himanshoe.user.UserModel
+import com.himanshoe.user.User
 import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.checkHashForPassword
 import com.himanshoe.util.getHashWithSalt
@@ -12,7 +12,7 @@ import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
 
 class AuthRepositoryImpl(
-    private val userCollection: CoroutineCollection<UserModel>,
+    private val userCollection: CoroutineCollection<User>,
     private val jwtConfig: JwtConfig,
     private val exceptionHandler: ExceptionHandler
 ) : AuthRepository {
@@ -30,7 +30,7 @@ class AuthRepositoryImpl(
             throw exceptionHandler.respondWithAlreadyExistException(USER_ALREADY_EXIST_MESSAGE)
         } else {
             val hashPassword = getHashWithSalt(authRequest.password)
-            val user = UserModel(authRequest.username, hashPassword)
+            val user = User(authRequest.username, hashPassword)
             val responseIsSuccessful = userCollection.insertOne(user).wasAcknowledged()
             when {
                 responseIsSuccessful -> BaseResponse(
@@ -44,7 +44,7 @@ class AuthRepositoryImpl(
 
     override suspend fun loginUser(authRequest: AuthRequest): BaseResponse<Any> {
         return if (checkIfUsersExist(authRequest.username)) {
-            val user: UserModel? = userCollection.findOne(UserModel::username eq authRequest.username)
+            val user: User? = userCollection.findOne(User::username eq authRequest.username)
             if (user != null) {
                 val hashedPasswordIsSame = checkHashForPassword(authRequest.password, user.passwordHash)
                 when {
@@ -63,6 +63,6 @@ class AuthRepositoryImpl(
     }
 
     override suspend fun checkIfUsersExist(username: String): Boolean {
-        return userCollection.findOne(UserModel::username eq username) != null
+        return userCollection.findOne(User::username eq username) != null
     }
 }

@@ -10,13 +10,10 @@ import com.himanshoe.base.http.ExceptionHandlerImpl
 
 object ServiceLocator {
 
-    object Locate {
 
-        fun provideAuthRepository(): AuthRepository {
-            return AuthRepositoryImpl(Database.userCollection, provideJwtConfig(), provideExceptionHandler())
-        }
+    fun provideAuthRepository(): AuthRepository {
+        return AuthRepositoryImpl(Database.userCollection, provideJwtConfig(), provideExceptionHandler())
     }
-
 
     fun provideJwtConfig(): JwtConfig {
         return JwtConfigImpl()

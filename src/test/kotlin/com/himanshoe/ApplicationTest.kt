@@ -9,7 +9,7 @@ import kotlin.test.*
 class ApplicationTest {
     @Test
     fun testRoot() {
-        withTestApplication({ configureRoutingAndSerialization()     }) {
+        withTestApplication({ configureRoutingAndSerialization(serviceLocator) }) {
             handleRequest(HttpMethod.Get, "/").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals("Hello World!", response.content)

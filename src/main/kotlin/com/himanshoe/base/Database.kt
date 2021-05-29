@@ -1,6 +1,6 @@
 package com.himanshoe.base
 
-import com.himanshoe.user.UserModel
+import com.himanshoe.user.User
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
@@ -12,5 +12,5 @@ object Database {
 
     private val database = mongoClient.getDatabase(DATABASE_NAME)
 
-    val userCollection = database.getCollection<UserModel>()
+    val userCollection = database.getCollection<User>()
 }

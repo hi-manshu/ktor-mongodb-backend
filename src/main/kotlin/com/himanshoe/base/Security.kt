@@ -1,6 +1,7 @@
 package com.himanshoe.base
 
 import com.himanshoe.base.auth.JwtConfig
+import com.himanshoe.base.auth.UserPrincipal
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
@@ -14,7 +15,7 @@ fun Application.configureSecurity(jwtConfig: JwtConfig) {
             validate {
                 val playerId = it.payload.getClaim(jwtConfig.userId).asString()
                 if (playerId != null) {
-                    UserIdPrincipal(playerId)
+                    UserPrincipal(playerId)
                 } else {
                     null
                 }
