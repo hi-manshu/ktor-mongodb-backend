@@ -7,5 +7,5 @@ data class UserModel(
     val username: String = "",
     val passwordHash: String = "",
     @BsonId
-    val id: String = ObjectId().toString()
+    val userId: String = ObjectId().toString()
 )

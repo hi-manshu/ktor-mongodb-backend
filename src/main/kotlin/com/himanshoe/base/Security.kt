@@ -1,47 +1,24 @@
 package com.himanshoe.base
 
-import com.auth0.jwt.JWT
-import com.auth0.jwt.JWTVerifier
-import com.auth0.jwt.algorithms.Algorithm
+import com.himanshoe.base.auth.JwtConfig
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
-import java.util.*
 
-fun Application.configureSecurity() {
-
-    val jwtAudience = environment.config.property("jwt.audience").getString()
-    val jwtRealm = environment.config.property("jwt.realm").getString()
+fun Application.configureSecurity(jwtConfig: JwtConfig) {
 
     authentication {
         jwt {
-            realm = jwtRealm
-            verifier(makeJwtVerifier("ktor-mongo", jwtAudience))
-            validate { credential ->
-                if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null
+            verifier(jwtConfig.verifier)
+            realm = jwtConfig.realm
+            validate {
+                val playerId = it.payload.getClaim(jwtConfig.userId).asString()
+                if (playerId != null) {
+                    UserIdPrincipal(playerId)
+                } else {
+                    null
+                }
             }
         }
     }
-
-}
-
-
-private val algorithm = Algorithm.HMAC256("secret")
-
-private fun makeJwtVerifier(issuer: String, audience: String): JWTVerifier = JWT
-    .require(algorithm)
-    .withAudience(audience)
-    .withIssuer(issuer)
-    .build()
-
-
-fun generateToken(userId: String): String = JWT.create()
-    .withSubject("Authentication")
-    .withIssuer("ktor-mongo")
-    .withClaim("userId", userId)
-    .withExpiresAt(obtainExpirationDate())
-    .sign(algorithm)
-
-private fun obtainExpirationDate(): Date {
-    return Date(System.currentTimeMillis() + 36000000)
 }

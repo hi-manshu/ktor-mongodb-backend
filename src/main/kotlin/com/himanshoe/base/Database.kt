@@ -8,9 +8,9 @@ object Database {
 
     private const val DATABASE_NAME = "ktor-mongo"
 
-    private val mongoClient by lazy { KMongo.createClient().coroutine }
+    private val mongoClient =  KMongo.createClient().coroutine
 
-    private val database by lazy { mongoClient.getDatabase(DATABASE_NAME) }
+    private val database = mongoClient.getDatabase(DATABASE_NAME)
 
-    val userCollection by lazy { database.getCollection<UserModel>() }
+    val userCollection = database.getCollection<UserModel>()
 }

@@ -9,11 +9,13 @@ import io.ktor.routing.*
 fun Application.authRoute(authRepository: AuthRepository) {
 
     routing {
+
         post(AuthConstant.LOGIN) {
             val authRequest = call.receive<AuthRequest>()
             val token = authRepository.loginUser(authRequest)
             call.respond(token)
         }
+
         post(AuthConstant.REGISTER) {
             val authRequest = call.receive<AuthRequest>()
             val token = authRepository.createToken(authRequest)

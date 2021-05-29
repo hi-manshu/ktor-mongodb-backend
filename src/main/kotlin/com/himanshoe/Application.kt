@@ -2,6 +2,7 @@ package com.himanshoe
 
 import io.ktor.application.*
 import com.himanshoe.base.*
+import com.himanshoe.di.ServiceLocator
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
@@ -15,6 +16,6 @@ fun main(args: Array<String>): Unit =
 fun Application.module(testing: Boolean = false) {
     configureStatusPages()
     configureRoutingAndSerialization()
-    configureSecurity()
+    configureSecurity(ServiceLocator.provideJwtConfig())
     configureHTTP()
 }

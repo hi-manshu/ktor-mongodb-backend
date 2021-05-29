@@ -17,7 +17,7 @@ fun Application.configureRoutingAndSerialization() {
 
     routing {
         userRoutes()
-        authRoute(ServiceLocator.authRepository())
+        authRoute(ServiceLocator.provideAuthRepository())
     }
 }
 
