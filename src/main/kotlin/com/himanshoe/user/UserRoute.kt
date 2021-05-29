@@ -8,7 +8,7 @@ import io.ktor.routing.*
 fun Application.userRoutes() {
     routing {
         get<UserInfo> {
-            call.respond(UserModel("dsfsdf"))
+//            call.respond(UserModel("dsfsdf"))
         }
     }
 }

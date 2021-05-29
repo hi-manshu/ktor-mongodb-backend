@@ -25,6 +25,7 @@ fun Application.configureSecurity() {
 
 }
 
+
 private val algorithm = Algorithm.HMAC256("secret")
 private fun makeJwtVerifier(issuer: String, audience: String): JWTVerifier = JWT
     .require(algorithm)

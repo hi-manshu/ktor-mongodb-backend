@@ -1,6 +1,7 @@
 package com.himanshoe.base
 
 import com.himanshoe.auth.authRoute
+import com.himanshoe.di.ServiceLocator
 import com.himanshoe.user.userRoutes
 import io.ktor.routing.*
 import io.ktor.locations.*
@@ -16,7 +17,7 @@ fun Application.configureRoutingAndSerialization() {
 
     routing {
         userRoutes()
-        authRoute()
+        authRoute(ServiceLocator.authRepository())
     }
 }
 
