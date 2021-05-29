@@ -2,47 +2,55 @@ package com.himanshoe.auth.repository
 
 import com.himanshoe.auth.AuthRequest
 import com.himanshoe.base.auth.JwtConfig
+import com.himanshoe.base.http.ExceptionHandler
 import com.himanshoe.user.UserModel
-import com.himanshoe.util.Response
+import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.checkHashForPassword
 import com.himanshoe.util.getHashWithSalt
+import io.ktor.http.*
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
 
 class AuthRepositoryImpl(
     private val userCollection: CoroutineCollection<UserModel>,
-    private val jwtConfig: JwtConfig
+    private val jwtConfig: JwtConfig,
+    private val exceptionHandler: ExceptionHandler
 ) : AuthRepository {
 
-    override suspend fun createToken(authRequest: AuthRequest): Response<Any> {
+    companion object {
+        private const val USER_ALREADY_EXIST_MESSAGE = "User already exists, Please login"
+        private const val EITHER_USERNAME_PASSWORD_INCORRECT = "Either username or password is incorrect"
+        private const val NOT_AUTHORIZED = "Not authorised"
+        private const val USER_DONT_EXIST_MESSAGE = "User doesn't exists, Please register"
+
+    }
+
+    override suspend fun createToken(authRequest: AuthRequest): BaseResponse<Any> {
         return if (checkIfUsersExist(authRequest.username)) {
-            val message = "User already exists, Please login"
-            Response.Failure(message = message, throwable = null)
+            throw exceptionHandler.respondWithAlreadyExistException(USER_ALREADY_EXIST_MESSAGE)
         } else {
             val hashPassword = getHashWithSalt(authRequest.password)
             val user = UserModel(authRequest.username, hashPassword)
             userCollection.insertOne(user)
-            Response.Success(data = jwtConfig.makeAccessToken(user.userId))
-
+            BaseResponse(data = jwtConfig.makeAccessToken(user.userId), statusCode = HttpStatusCode.Created)
         }
     }
 
-    override suspend fun loginUser(authRequest: AuthRequest): Response<Any> {
+    override suspend fun loginUser(authRequest: AuthRequest): BaseResponse<Any> {
         return if (checkIfUsersExist(authRequest.username)) {
             val user: UserModel? = userCollection.findOne(UserModel::username eq authRequest.username)
             if (user != null) {
                 val hashPassword = checkHashForPassword(authRequest.password, user.passwordHash)
                 if (hashPassword) {
-                    Response.Success(data = jwtConfig.makeAccessToken(user.userId))
+                    BaseResponse(data = jwtConfig.makeAccessToken(user.userId), statusCode = HttpStatusCode.OK)
                 } else {
-                    Response.Failure(message = "message", throwable = null)
+                    throw exceptionHandler.respondWithUnauthorizedException(EITHER_USERNAME_PASSWORD_INCORRECT)
                 }
             } else {
-                Response.Failure(message = "message", throwable = null)
+                throw exceptionHandler.respondWithUnauthorizedException(NOT_AUTHORIZED)
             }
         } else {
-            val message = "User doesn't exists, Please register"
-            Response.Failure(message = message, throwable = null)
+            throw exceptionHandler.respondWithUnauthorizedException(USER_DONT_EXIST_MESSAGE)
         }
     }
 

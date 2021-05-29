@@ -1,14 +1,9 @@
 package com.himanshoe.util
 
-sealed class Response<out T> {
-    data class Success<out R>   (
-        val status: Boolean = true,
-        val data: R
-    ) : Response<R>()
+import io.ktor.http.*
 
-    data class Failure(
-        val status: Boolean = false,
-        val message: String?,
-        val throwable: Throwable?
-    ) : Response<Nothing>()
-}
+data class BaseResponse<out T : Any>(
+    val statusCode: HttpStatusCode,
+    val data: T? = null,
+    val message: String? = null
+)

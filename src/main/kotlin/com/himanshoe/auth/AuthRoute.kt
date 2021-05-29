@@ -10,16 +10,16 @@ fun Application.authRoute(authRepository: AuthRepository) {
 
     routing {
 
-        post(AuthConstant.LOGIN) {
+        post<AuthLogin> {
             val authRequest = call.receive<AuthRequest>()
-            val token = authRepository.loginUser(authRequest)
-            call.respond(token)
+            val response = authRepository.loginUser(authRequest)
+            call.respond(response)
         }
 
         post(AuthConstant.REGISTER) {
             val authRequest = call.receive<AuthRequest>()
-            val token = authRepository.createToken(authRequest)
-            call.respond(token)
+            val response = authRepository.createToken(authRequest)
+            call.respond(response)
         }
     }
 }

@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import java.util.*
 
 class JwtConfigImpl : JwtConfig {
-    companion object{
+    companion object {
 
         private const val SECRET = "zAP5MBA4B4Ijz0MZaS48"
         private const val ISSUER = "ktor.io"
@@ -31,15 +31,17 @@ class JwtConfigImpl : JwtConfig {
         get() = USER_ID
 
     override fun makeAccessToken(userId: String): String {
-        return encodeJWTWithUserId(userId, Date(System.currentTimeMillis() + ACCESS_TOKEN))
+        return encodeJWTWithUserId(userId)
     }
 
-    private fun encodeJWTWithUserId(userId: String, withExpiresAt: Date): String = JWT.create()
+    private fun encodeJWTWithUserId(
+        userId: String,
+        withExpiresAt: Date = Date(System.currentTimeMillis() + ACCESS_TOKEN)
+    ): String = JWT.create()
         .withSubject(SUBJECT)
         .withIssuer(ISSUER)
         .withAudience(AUDIENCE)
         .withClaim(USER_ID, userId)
-        .withExpiresAt(withExpiresAt)
         .sign(algorithm)
 
     override fun decodeJwtGetUserId(token: String): String {
