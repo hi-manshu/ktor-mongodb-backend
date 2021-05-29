@@ -1,7 +1,7 @@
 package com.himanshoe
 
 import io.ktor.application.*
-import com.himanshoe.plugins.*
+import com.himanshoe.base.*
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
@@ -14,8 +14,7 @@ fun main(args: Array<String>): Unit =
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
     configureStatusPages()
-    configureRouting()
+    configureRoutingAndSerialization()
     configureSecurity()
     configureHTTP()
-    configureSerialization()
 }
