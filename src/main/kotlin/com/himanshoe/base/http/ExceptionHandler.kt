@@ -9,4 +9,6 @@ interface ExceptionHandler {
     fun respondWithNotFoundException(message: String?): Exception
 
     fun respondWithAlreadyExistException(message: String?): Exception
+
+    fun respondWithGenericException(message: String?): Exception
 }

@@ -8,7 +8,7 @@ object Database {
 
     private const val DATABASE_NAME = "ktor-mongo"
 
-    private val mongoClient =  KMongo.createClient().coroutine
+    private val mongoClient = KMongo.createClient().coroutine
 
     private val database = mongoClient.getDatabase(DATABASE_NAME)
 

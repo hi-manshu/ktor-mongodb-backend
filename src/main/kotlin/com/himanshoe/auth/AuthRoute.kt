@@ -10,7 +10,7 @@ fun Application.authRoute(authRepository: AuthRepository) {
 
     routing {
 
-        post<AuthLogin> {
+        post(AuthConstant.LOGIN) {
             val authRequest = call.receive<AuthRequest>()
             val response = authRepository.loginUser(authRequest)
             call.respond(response)

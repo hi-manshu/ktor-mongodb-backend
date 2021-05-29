@@ -1,4 +1,3 @@
 package com.himanshoe.user.repository
 
-class UserRepository {
-}
+class UserRepository

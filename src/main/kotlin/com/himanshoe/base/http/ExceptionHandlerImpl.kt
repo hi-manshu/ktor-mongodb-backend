@@ -1,9 +1,6 @@
 package com.himanshoe.base.http
 
-import com.himanshoe.base.AuthorizationException
-import com.himanshoe.base.BadRequestException
-import com.himanshoe.base.ConflictException
-import com.himanshoe.base.NotFoundException
+import com.himanshoe.base.*
 
 class ExceptionHandlerImpl : ExceptionHandler {
 
@@ -21,5 +18,9 @@ class ExceptionHandlerImpl : ExceptionHandler {
 
     override fun respondWithAlreadyExistException(message: String?): Exception {
         return ConflictException(message)
+    }
+
+    override fun respondWithGenericException(message: String?): Exception {
+        return SomethingWentWrongException(message)
     }
 }

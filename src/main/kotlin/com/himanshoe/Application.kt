@@ -1,8 +1,11 @@
 package com.himanshoe
 
-import io.ktor.application.*
-import com.himanshoe.base.*
+import com.himanshoe.base.configureHTTP
+import com.himanshoe.base.configureRoutingAndSerialization
+import com.himanshoe.base.configureSecurity
+import com.himanshoe.base.configureStatusPages
 import com.himanshoe.di.ServiceLocator
+import io.ktor.application.*
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)

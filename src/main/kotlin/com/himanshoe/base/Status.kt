@@ -22,6 +22,9 @@ fun Application.configureStatusPages() {
         exception<ConflictException> { cause ->
             call.respond(ExceptionResponse(HttpStatusCode.Conflict, cause.message.toString()))
         }
+        exception<SomethingWentWrongException> { cause ->
+            call.respond(ExceptionResponse(HttpStatusCode.ExpectationFailed, cause.message.toString()))
+        }
     }
 }
 
@@ -34,5 +37,7 @@ class AuthorizationException(message: String?) : RuntimeException(message)
 class BadRequestException(message: String?) : RuntimeException(message)
 
 class NotFoundException(message: String?) : RuntimeException(message)
+
+class SomethingWentWrongException(message: String?) : RuntimeException(message)
 
 data class ExceptionResponse(val code: HttpStatusCode, val message: String? = null)

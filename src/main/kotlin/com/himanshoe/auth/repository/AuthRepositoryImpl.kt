@@ -22,7 +22,7 @@ class AuthRepositoryImpl(
         private const val EITHER_USERNAME_PASSWORD_INCORRECT = "Either username or password is incorrect"
         private const val NOT_AUTHORIZED = "Not authorised"
         private const val USER_DONT_EXIST_MESSAGE = "User doesn't exists, Please register"
-
+        private const val SOMETHING_WENT_WRONG = "Something went wrong. Please try again"
     }
 
     override suspend fun createToken(authRequest: AuthRequest): BaseResponse<Any> {
@@ -31,8 +31,14 @@ class AuthRepositoryImpl(
         } else {
             val hashPassword = getHashWithSalt(authRequest.password)
             val user = UserModel(authRequest.username, hashPassword)
-            userCollection.insertOne(user)
-            BaseResponse(data = jwtConfig.makeAccessToken(user.userId), statusCode = HttpStatusCode.Created)
+            val responseIsSuccessful = userCollection.insertOne(user).wasAcknowledged()
+            when {
+                responseIsSuccessful -> BaseResponse(
+                    data = jwtConfig.makeAccessToken(user.userId),
+                    statusCode = HttpStatusCode.Created
+                )
+                else -> throw exceptionHandler.respondWithGenericException(SOMETHING_WENT_WRONG)
+            }
         }
     }
 
@@ -40,11 +46,13 @@ class AuthRepositoryImpl(
         return if (checkIfUsersExist(authRequest.username)) {
             val user: UserModel? = userCollection.findOne(UserModel::username eq authRequest.username)
             if (user != null) {
-                val hashPassword = checkHashForPassword(authRequest.password, user.passwordHash)
-                if (hashPassword) {
-                    BaseResponse(data = jwtConfig.makeAccessToken(user.userId), statusCode = HttpStatusCode.OK)
-                } else {
-                    throw exceptionHandler.respondWithUnauthorizedException(EITHER_USERNAME_PASSWORD_INCORRECT)
+                val hashedPasswordIsSame = checkHashForPassword(authRequest.password, user.passwordHash)
+                when {
+                    hashedPasswordIsSame -> BaseResponse(
+                        data = jwtConfig.makeAccessToken(user.userId),
+                        statusCode = HttpStatusCode.OK
+                    )
+                    else -> throw exceptionHandler.respondWithUnauthorizedException(EITHER_USERNAME_PASSWORD_INCORRECT)
                 }
             } else {
                 throw exceptionHandler.respondWithUnauthorizedException(NOT_AUTHORIZED)

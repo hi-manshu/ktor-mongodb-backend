@@ -1,3 +1,3 @@
 package com.himanshoe.auth
 
-data class AuthEntity(val token:String)
+data class AuthEntity(val token: String)
