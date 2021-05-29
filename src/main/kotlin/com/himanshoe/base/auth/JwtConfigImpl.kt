@@ -12,10 +12,10 @@ class JwtConfigImpl : JwtConfig {
         private const val ISSUER = "ktor.io"
         private const val REALM = "ktor.io"
         private val algorithm = Algorithm.HMAC512(SECRET)
-        const val SUBJECT = "Authentication"
-        const val USER_ID = "userId"
-        const val AUDIENCE = "ktor-mongo"
-        const val ACCESS_TOKEN = 36_000_00 * 24 * 3
+        private const val SUBJECT = "Authentication"
+        private const val USER_ID = "userId"
+        private const val AUDIENCE = "ktor-mongo"
+        private const val ACCESS_TOKEN = 36_000_00 * 24 * 3
     }
 
     override val verifier: JWTVerifier
