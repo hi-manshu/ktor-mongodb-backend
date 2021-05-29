@@ -11,7 +11,6 @@ fun getHashWithSalt(stringToHash: String, saltLength: Int = 32): String {
     return "$saltAsHex:$hash"
 }
 
-
 fun checkHashForPassword(password: String, hashWithSalt: String): Boolean {
     val hashAndSalt = hashWithSalt.split(":")
     val salt = hashAndSalt[0]
