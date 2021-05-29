@@ -9,8 +9,10 @@ import com.himanshoe.util.getHashWithSalt
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
 
-class AuthRepositoryImpl(private val userCollection: CoroutineCollection<UserModel>, private val jwtConfig: JwtConfig) :
-    AuthRepository {
+class AuthRepositoryImpl(
+    private val userCollection: CoroutineCollection<UserModel>,
+    private val jwtConfig: JwtConfig
+) : AuthRepository {
 
     override suspend fun createToken(authRequest: AuthRequest): Response<Any> {
         return if (checkIfUsersExist(authRequest.username)) {
