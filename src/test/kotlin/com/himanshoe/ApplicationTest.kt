@@ -1,7 +1,7 @@
 package com.himanshoe
 
+import com.himanshoe.base.configureRoutingAndSerialization
 import io.ktor.http.*
-import com.himanshoe.plugins.configureRouting
 import io.ktor.server.testing.*
 import org.junit.Test
 import kotlin.test.*
@@ -9,7 +9,7 @@ import kotlin.test.*
 class ApplicationTest {
     @Test
     fun testRoot() {
-        withTestApplication({ configureRouting() }) {
+        withTestApplication({ configureRoutingAndSerialization()     }) {
             handleRequest(HttpMethod.Get, "/").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals("Hello World!", response.content)

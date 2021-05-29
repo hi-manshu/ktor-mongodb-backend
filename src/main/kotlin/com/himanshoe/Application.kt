@@ -1,7 +1,11 @@
 package com.himanshoe
 
+import com.himanshoe.base.configureHTTP
+import com.himanshoe.base.configureRoutingAndSerialization
+import com.himanshoe.base.configureSecurity
+import com.himanshoe.base.configureStatusPages
+import com.himanshoe.di.ServiceLocator
 import io.ktor.application.*
-import com.himanshoe.plugins.*
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
@@ -14,8 +18,7 @@ fun main(args: Array<String>): Unit =
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
     configureStatusPages()
-    configureRouting()
-    configureSecurity()
+    configureRoutingAndSerialization()
+    configureSecurity(ServiceLocator.provideJwtConfig())
     configureHTTP()
-    configureSerialization()
 }
