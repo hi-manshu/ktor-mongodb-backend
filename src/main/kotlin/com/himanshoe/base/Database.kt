@@ -13,5 +13,4 @@ object Database {
     private val database by lazy { mongoClient.getDatabase(DATABASE_NAME) }
 
     val userCollection by lazy { database.getCollection<UserModel>() }
-
 }
