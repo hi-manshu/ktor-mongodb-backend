@@ -25,11 +25,12 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun currentUser(token: String?): BaseResponse<Any> {
-        if (token != null) {
-            throw exceptionHandler.respondWithNotFoundException(TOKEN_NOT_FOUND)
+    override suspend fun currentUser(userId: String?): BaseResponse<Any> {
+        val (user, doExist) = checkIfUsersExistWithUserData(userId)
+        if (userId != null && doExist) {
+            return BaseResponse(HttpStatusCode.Found, user?.asResponse())
         } else {
-            throw exceptionHandler.respondWithBadRequestException(TOKEN_NOT_FOUND)
+            throw exceptionHandler.respondWithNotFoundException(USER_NOT_FOUND)
         }
     }
 

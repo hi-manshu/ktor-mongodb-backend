@@ -1,11 +1,10 @@
 package com.himanshoe.user
 
+import com.himanshoe.base.auth.UserIdPrincipalForUser
 import com.himanshoe.di.domain.DomainProvider
-import com.himanshoe.util.CommonConstant
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.locations.*
-import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
@@ -16,9 +15,11 @@ fun Application.userRoutes(domainProvider: DomainProvider) {
             call.respond(response)
         }
         authenticate {
-            get<CurrentUser> { userRequest ->
-                val token = call.request.header(CommonConstant.Authorization)
-                call.respond(token.toString())
+            get<CurrentUser> {
+                val principal = call.authentication.principal<UserIdPrincipalForUser>()
+                val userId = principal?.userId
+                val response = domainProvider.provideCurrentUserDetailUseCase().invoke(userId)
+                call.respond(response)
             }
         }
 
