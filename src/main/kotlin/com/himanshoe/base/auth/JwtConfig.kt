@@ -1,19 +1,47 @@
 package com.himanshoe.base.auth
 
+import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
+import com.auth0.jwt.algorithms.Algorithm
 
-interface JwtConfig {
+/**
+ * Simple implementation for providing JWT Authentication mechanism.
+ * Use [makeAccessToken] method to generate token.
+ */
+open class JwtConfig private constructor(secret: String) {
 
-    val verifier: JWTVerifier
+    private val algorithm = Algorithm.HMAC256(secret)
 
-    val realm: String
+    val verifier: JWTVerifier = JWT
+        .require(algorithm)
+        .withIssuer(ISSUER)
+        .withAudience(AUDIENCE)
+        .build()
 
-    val userId: String
+    /**
+     * Generates JWT token from [userId].
+     */
+    fun makeAccessToken(userId: String): String = JWT
+        .create()
+        .withIssuer(ISSUER)
+        .withAudience(AUDIENCE)
+        .withClaim(ClAIM, userId)
+        .sign(algorithm)
 
-    val audience: String
+    companion object {
+        lateinit var instance: JwtConfig
+            private set
 
-    fun makeAccessToken(userId: String): String
+        fun initialize(secret: String) {
+            synchronized(this) {
+                if (!this::instance.isInitialized) {
+                    instance = JwtConfig(secret)
+                }
+            }
+        }
 
-    fun decodeJwtGetUserId(token: String): String
-
+        private const val ISSUER = "ktor-backend"
+        private const val AUDIENCE = "ktor-backend"
+        const val ClAIM = "userId"
+    }
 }
