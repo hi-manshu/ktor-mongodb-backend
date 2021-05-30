@@ -3,9 +3,7 @@ package com.himanshoe.user.repository
 import com.himanshoe.base.http.ExceptionHandler
 import com.himanshoe.user.User
 import com.himanshoe.util.BaseResponse
-import com.himanshoe.util.Logger
 import io.ktor.http.*
-import org.bson.types.ObjectId
 import org.litote.kmongo.coroutine.CoroutineCollection
 
 class UserRepositoryImpl(
