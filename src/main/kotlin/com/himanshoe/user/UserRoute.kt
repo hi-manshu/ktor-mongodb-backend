@@ -5,6 +5,8 @@ import com.himanshoe.di.domain.DomainProvider
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.locations.*
+import io.ktor.locations.put
+import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
@@ -21,7 +23,13 @@ fun Application.userRoutes(domainProvider: DomainProvider) {
                 val response = domainProvider.provideCurrentUserDetailUseCase().invoke(userId)
                 call.respond(response)
             }
+            put<UpdateUser> {
+                val principal = call.authentication.principal<UserIdPrincipalForUser>()
+                val userId = principal?.userId
+                val user = call.receive<User>()
+                val response = domainProvider.provideUpdateCurrentUserUseCase().invoke(Pair(userId,user) as Pair<String, User>)
+                call.respond(response)
+            }
         }
-
     }
 }

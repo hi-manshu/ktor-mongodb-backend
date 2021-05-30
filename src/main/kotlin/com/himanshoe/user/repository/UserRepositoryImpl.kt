@@ -5,6 +5,7 @@ import com.himanshoe.user.User
 import com.himanshoe.util.BaseResponse
 import io.ktor.http.*
 import org.litote.kmongo.coroutine.CoroutineCollection
+import java.util.*
 
 class UserRepositoryImpl(
     private val userCollection: CoroutineCollection<User>,
@@ -14,6 +15,7 @@ class UserRepositoryImpl(
     companion object {
         private const val USER_NOT_FOUND = "User not found"
         private const val TOKEN_NOT_FOUND = "Token cannot be null or empty"
+        private const val CANNOT_UPDATE = "You cannot update the data"
     }
 
     override suspend fun findUserById(userId: String?): BaseResponse<Any> {
@@ -32,6 +34,24 @@ class UserRepositoryImpl(
         } else {
             throw exceptionHandler.respondWithNotFoundException(USER_NOT_FOUND)
         }
+    }
+
+    override suspend fun updateUser(userId: String, user: User): BaseResponse<Any> {
+        val (userToBeUpdated, doExist) = checkIfUsersExistWithUserData(userId)
+        if (userToBeUpdated != null && doExist && userToBeUpdated.userId == userId) {
+            val userUpdated = user.copy(
+                userId = userId,
+                username = userToBeUpdated.username,
+                passwordHash = userToBeUpdated.passwordHash,
+                updatedAt = Date().toInstant().toString()
+            )
+            val isUpdated =
+                userCollection.updateOneById(userId, userUpdated, updateOnlyNotNullProperties = true).wasAcknowledged()
+            return BaseResponse(HttpStatusCode.OK, isUpdated)
+        } else {
+            throw exceptionHandler.respondWithGenericException(CANNOT_UPDATE)
+        }
+
     }
 
     private suspend fun checkIfUsersExistWithUserData(userId: String?): Pair<User?, Boolean> {

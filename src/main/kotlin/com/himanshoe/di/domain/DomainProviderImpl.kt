@@ -5,6 +5,7 @@ import com.himanshoe.auth.domain.LoginUserUseCase
 import com.himanshoe.di.repository.RepositoryProvider
 import com.himanshoe.user.domain.CurrentUserDetailUseCase
 import com.himanshoe.user.domain.FindUserByIdUseCase
+import com.himanshoe.user.domain.UpdateCurrentUserUseCase
 
 class DomainProviderImpl(private val repositoryProvider: RepositoryProvider) : DomainProvider {
 
@@ -22,5 +23,9 @@ class DomainProviderImpl(private val repositoryProvider: RepositoryProvider) : D
 
     override fun provideCurrentUserDetailUseCase(): CurrentUserDetailUseCase {
         return DomainLocator.provideCurrentUserDetailUseCase(repositoryProvider.provideUserRepository())
+    }
+
+    override fun provideUpdateCurrentUserUseCase(): UpdateCurrentUserUseCase {
+        return DomainLocator.provideUpdateCurrentUserUseCase(repositoryProvider.provideUserRepository())
     }
 }
