@@ -2,6 +2,9 @@ package com.himanshoe.base.http
 
 import com.himanshoe.base.*
 
+/**
+ * Handles the Exceptions and implements the interface [ExceptionHandler]
+ */
 class ExceptionHandlerImpl : ExceptionHandler {
 
     override fun respondWithBadRequestException(message: String?): Exception {
