@@ -27,7 +27,7 @@ class UserRepositoryImpl(
     }
 
     private suspend fun checkIfUsersExistWithUserData(userId: String?): Pair<User?, Boolean> {
-        val user = userCollection.findOne( User::userId eq userId.toString())
+        val user = userCollection.findOne(User::userId eq userId.toString())
         Logger.d(user.toString())
         Logger.d(userId.toString())
         return Pair(user, user != null)

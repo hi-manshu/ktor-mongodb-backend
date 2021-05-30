@@ -1,25 +1,11 @@
 package com.himanshoe.di
 
-import com.himanshoe.auth.repository.AuthRepository
-import com.himanshoe.auth.repository.AuthRepositoryImpl
-import com.himanshoe.base.Database
 import com.himanshoe.base.auth.JwtConfig
 import com.himanshoe.base.auth.JwtConfigImpl
 import com.himanshoe.base.http.ExceptionHandler
 import com.himanshoe.base.http.ExceptionHandlerImpl
-import com.himanshoe.user.repository.UserRepository
-import com.himanshoe.user.repository.UserRepositoryImpl
 
 object ServiceLocator {
-
-
-    fun provideAuthRepository(): AuthRepository {
-        return AuthRepositoryImpl(Database.userCollection, provideJwtConfig(), provideExceptionHandler())
-    }
-
-    fun provideUserRepository(): UserRepository {
-        return UserRepositoryImpl(Database.userCollection, provideExceptionHandler())
-    }
 
     fun provideJwtConfig(): JwtConfig {
         return JwtConfigImpl()
@@ -28,5 +14,4 @@ object ServiceLocator {
     fun provideExceptionHandler(): ExceptionHandler {
         return ExceptionHandlerImpl()
     }
-
 }

@@ -54,15 +54,14 @@ class AuthRepositoryImpl(
                     )
                     else -> throw exceptionHandler.respondWithUnauthorizedException(EITHER_USERNAME_PASSWORD_INCORRECT)
                 }
-            } else {
-                throw exceptionHandler.respondWithUnauthorizedException(NOT_AUTHORIZED)
-            }
+            } else throw exceptionHandler.respondWithUnauthorizedException(NOT_AUTHORIZED)
+
         } else {
             throw exceptionHandler.respondWithUnauthorizedException(USER_DONT_EXIST_MESSAGE)
         }
     }
 
-    override suspend fun checkIfUsersExist(username: String): Boolean {
+    private suspend fun checkIfUsersExist(username: String): Boolean {
         return userCollection.findOne(User::username eq username) != null
     }
 }

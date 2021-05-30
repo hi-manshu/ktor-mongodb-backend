@@ -9,5 +9,4 @@ interface AuthRepository {
 
     suspend fun loginUser(authRequest: AuthRequest): BaseResponse<Any>
 
-    suspend fun checkIfUsersExist(username: String): Boolean
 }

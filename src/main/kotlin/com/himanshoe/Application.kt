@@ -21,7 +21,7 @@ private val serviceLocator = ServiceLocator
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
     configureStatusPages()
-    configureRoutingAndSerialization(serviceLocator)
+    configureRoutingAndSerialization()
     configureSecurity(serviceLocator.provideJwtConfig())
     configureHTTP()
 }

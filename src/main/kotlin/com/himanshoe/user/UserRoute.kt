@@ -1,15 +1,15 @@
 package com.himanshoe.user
 
-import com.himanshoe.user.repository.UserRepository
+import com.himanshoe.di.domain.DomainProvider
 import io.ktor.application.*
 import io.ktor.locations.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Application.userRoutes(userRepository: UserRepository) {
+fun Application.userRoutes(domainProvider: DomainProvider) {
     routing {
         get<UserInfo> { userRequest ->
-            val response = userRepository.findUserById(userRequest.userId)
+            val response = domainProvider.provideFindUserByIdUseCase().invoke(userRequest.userId)
             call.respond(response)
         }
     }
