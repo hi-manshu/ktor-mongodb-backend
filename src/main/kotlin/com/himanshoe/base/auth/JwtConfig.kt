@@ -10,6 +10,8 @@ interface JwtConfig {
 
     val userId: String
 
+    val audience: String
+
     fun makeAccessToken(userId: String): String
 
     fun decodeJwtGetUserId(token: String): String

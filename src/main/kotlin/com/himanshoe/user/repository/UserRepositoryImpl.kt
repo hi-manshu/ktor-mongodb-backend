@@ -13,6 +13,7 @@ class UserRepositoryImpl(
 
     companion object {
         private const val USER_NOT_FOUND = "User not found"
+        private const val TOKEN_NOT_FOUND = "Token cannot be null or empty"
     }
 
     override suspend fun findUserById(userId: String?): BaseResponse<Any> {
@@ -21,6 +22,14 @@ class UserRepositoryImpl(
             return BaseResponse(HttpStatusCode.Found, user?.asResponse())
         } else {
             throw exceptionHandler.respondWithNotFoundException(USER_NOT_FOUND)
+        }
+    }
+
+    override suspend fun currentUser(token: String?): BaseResponse<Any> {
+        if (token != null) {
+            throw exceptionHandler.respondWithNotFoundException(TOKEN_NOT_FOUND)
+        } else {
+            throw exceptionHandler.respondWithBadRequestException(TOKEN_NOT_FOUND)
         }
     }
 

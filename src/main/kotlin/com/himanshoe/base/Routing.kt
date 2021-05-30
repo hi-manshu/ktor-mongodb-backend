@@ -14,6 +14,7 @@ val domainLocator = DomainLocator
 
 fun Application.configureRoutingAndSerialization() {
     install(Locations)
+    install(Routing)
     install(ContentNegotiation) {
         gson()
     }

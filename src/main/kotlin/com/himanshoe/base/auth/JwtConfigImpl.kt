@@ -30,6 +30,9 @@ class JwtConfigImpl : JwtConfig {
     override val userId: String
         get() = USER_ID
 
+    override val audience: String
+        get() = AUDIENCE
+
     override fun makeAccessToken(userId: String): String {
         return encodeJWTWithUserId(userId)
     }
