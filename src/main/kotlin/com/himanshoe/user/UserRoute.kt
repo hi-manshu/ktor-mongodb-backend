@@ -27,7 +27,8 @@ fun Application.userRoutes(domainProvider: DomainProvider) {
                 val principal = call.authentication.principal<UserIdPrincipalForUser>()
                 val userId = principal?.userId
                 val user = call.receive<User>()
-                val response = domainProvider.provideUpdateCurrentUserUseCase().invoke(Pair(userId,user) as Pair<String, User>)
+                val response =
+                    domainProvider.provideUpdateCurrentUserUseCase().invoke(Pair(userId, user) as Pair<String, User>)
                 call.respond(response)
             }
         }

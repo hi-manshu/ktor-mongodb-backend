@@ -9,6 +9,6 @@ interface UserRepository {
 
     suspend fun currentUser(userId: String?): BaseResponse<Any>
 
-    suspend fun updateUser(userId:String,user:User): BaseResponse<Any>
+    suspend fun updateUser(userId: String, user: User): BaseResponse<Any>
 
 }

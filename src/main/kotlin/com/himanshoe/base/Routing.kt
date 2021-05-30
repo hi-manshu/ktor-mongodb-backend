@@ -28,7 +28,7 @@ fun Application.configureRoutingAndSerialization() {
             get("/authenticate") {
                 call.respond(
                     "get authenticated value from token " +
-                            "name = ${call.request.toString()}"
+                            "name = ${call.request}"
                 )
             }
         }

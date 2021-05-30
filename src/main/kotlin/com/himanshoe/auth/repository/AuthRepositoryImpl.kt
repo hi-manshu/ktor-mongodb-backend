@@ -11,12 +11,21 @@ import io.ktor.http.*
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
 
+/**
+ * [AuthRepositoryImpl] is a implementation for [AuthRepository]
+ * @param userCollection is the User Collection in KMongo
+ * @param jwtConfig Config file responsible for JWT Tokens
+ * @param exceptionHandler  is the container containing all the Exceptions
+ */
 class AuthRepositoryImpl(
     private val userCollection: CoroutineCollection<User>,
     private val jwtConfig: JwtConfig,
     private val exceptionHandler: ExceptionHandler
 ) : AuthRepository {
 
+    /**
+     * All static constant containing the Error code for [ExceptionHandler]
+     */
     companion object {
         private const val USER_ALREADY_EXIST_MESSAGE = "User already exists, Please login"
         private const val EITHER_USERNAME_PASSWORD_INCORRECT = "Either username or password is incorrect"

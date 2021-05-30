@@ -9,6 +9,7 @@ object ServiceLocator {
     fun provideJwtConfig() {
         return JwtConfig.initialize("ktor-backend")
     }
+
     fun provideExceptionHandler(): ExceptionHandler {
         return ExceptionHandlerImpl()
     }
