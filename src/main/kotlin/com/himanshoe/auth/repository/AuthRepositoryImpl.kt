@@ -46,9 +46,9 @@ class AuthRepositoryImpl(
         return if (checkIfUsersExist(authRequest.username)) {
             val user: User? = userCollection.findOne(User::username eq authRequest.username)
             if (user != null) {
-                val hashedPasswordIsSame = checkHashForPassword(authRequest.password, user.passwordHash)
-                when {
-                    hashedPasswordIsSame -> BaseResponse(
+                val hashedPasswordIsSame = user.passwordHash?.let { checkHashForPassword(authRequest.password, it) }
+                when (hashedPasswordIsSame) {
+                    true -> BaseResponse(
                         data = jwtConfig.makeAccessToken(user.userId),
                         statusCode = HttpStatusCode.OK
                     )

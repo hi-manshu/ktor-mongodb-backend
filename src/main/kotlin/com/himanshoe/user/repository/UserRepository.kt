@@ -5,6 +5,6 @@ import com.himanshoe.util.BaseResponse
 
 interface UserRepository {
 
-    suspend fun findUserById(userId: String?): BaseResponse<User>
+    suspend fun findUserById(userId: String?): BaseResponse<Any>
 
 }

@@ -12,13 +12,13 @@ fun Application.authRoutes(domainProvider: DomainProvider) {
 
         post(AuthConstant.LOGIN) {
             val authRequest = call.receive<AuthRequest>()
-            val response = domainProvider.provideCreateUserAuthTokenUseCase().invoke(authRequest)
+            val response = domainProvider.provideLoginUserUseCase().invoke(authRequest)
             call.respond(response)
         }
 
         post(AuthConstant.REGISTER) {
             val authRequest = call.receive<AuthRequest>()
-            val response = domainProvider.provideLoginUserUseCase().invoke(authRequest)
+            val response = domainProvider.provideCreateUserAuthTokenUseCase().invoke(authRequest)
             call.respond(response)
         }
     }
