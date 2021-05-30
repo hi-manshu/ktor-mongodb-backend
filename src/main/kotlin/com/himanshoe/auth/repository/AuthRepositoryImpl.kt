@@ -11,12 +11,21 @@ import io.ktor.http.*
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
 
+/**
+ * [AuthRepositoryImpl] is a implementation for [AuthRepository]
+ * @param userCollection is the User Collection in KMongo
+ * @param jwtConfig Config file responsible for JWT Tokens
+ * @param exceptionHandler  is the container containing all the Exceptions
+ */
 class AuthRepositoryImpl(
     private val userCollection: CoroutineCollection<User>,
     private val jwtConfig: JwtConfig,
     private val exceptionHandler: ExceptionHandler
 ) : AuthRepository {
 
+    /**
+     * All static constant containing the Error code for [ExceptionHandler]
+     */
     companion object {
         private const val USER_ALREADY_EXIST_MESSAGE = "User already exists, Please login"
         private const val EITHER_USERNAME_PASSWORD_INCORRECT = "Either username or password is incorrect"
@@ -46,23 +55,22 @@ class AuthRepositoryImpl(
         return if (checkIfUsersExist(authRequest.username)) {
             val user: User? = userCollection.findOne(User::username eq authRequest.username)
             if (user != null) {
-                val hashedPasswordIsSame = checkHashForPassword(authRequest.password, user.passwordHash)
-                when {
-                    hashedPasswordIsSame -> BaseResponse(
+                val hashedPasswordIsSame = user.passwordHash?.let { checkHashForPassword(authRequest.password, it) }
+                when (hashedPasswordIsSame) {
+                    true -> BaseResponse(
                         data = jwtConfig.makeAccessToken(user.userId),
                         statusCode = HttpStatusCode.OK
                     )
                     else -> throw exceptionHandler.respondWithUnauthorizedException(EITHER_USERNAME_PASSWORD_INCORRECT)
                 }
-            } else {
-                throw exceptionHandler.respondWithUnauthorizedException(NOT_AUTHORIZED)
-            }
+            } else throw exceptionHandler.respondWithUnauthorizedException(NOT_AUTHORIZED)
+
         } else {
             throw exceptionHandler.respondWithUnauthorizedException(USER_DONT_EXIST_MESSAGE)
         }
     }
 
-    override suspend fun checkIfUsersExist(username: String): Boolean {
+    private suspend fun checkIfUsersExist(username: String): Boolean {
         return userCollection.findOne(User::username eq username) != null
     }
 }

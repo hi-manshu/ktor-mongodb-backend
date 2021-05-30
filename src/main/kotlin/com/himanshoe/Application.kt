@@ -20,8 +20,9 @@ private val serviceLocator = ServiceLocator
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+    ServiceLocator.provideJwtConfig()
     configureStatusPages()
-    configureRoutingAndSerialization(serviceLocator)
-    configureSecurity(serviceLocator.provideJwtConfig())
+    configureSecurity()
+    configureRoutingAndSerialization()
     configureHTTP()
 }

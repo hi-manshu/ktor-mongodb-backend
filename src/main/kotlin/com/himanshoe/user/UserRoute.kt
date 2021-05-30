@@ -1,13 +1,36 @@
 package com.himanshoe.user
 
+import com.himanshoe.base.auth.UserIdPrincipalForUser
+import com.himanshoe.di.domain.DomainProvider
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.locations.*
+import io.ktor.locations.put
+import io.ktor.request.*
+import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Application.userRoutes() {
+fun Application.userRoutes(domainProvider: DomainProvider) {
     routing {
-        get<UserInfo> {
-//            call.respond(UserModel("dsfsdf"))
+        get<UserInfo> { userRequest ->
+            val response = domainProvider.provideFindUserByIdUseCase().invoke(userRequest.userId)
+            call.respond(response)
+        }
+        authenticate {
+            get<CurrentUser> {
+                val principal = call.authentication.principal<UserIdPrincipalForUser>()
+                val userId = principal?.userId
+                val response = domainProvider.provideCurrentUserDetailUseCase().invoke(userId)
+                call.respond(response)
+            }
+            put<UpdateUser> {
+                val principal = call.authentication.principal<UserIdPrincipalForUser>()
+                val userId = principal?.userId
+                val user = call.receive<User>()
+                val response =
+                    domainProvider.provideUpdateCurrentUserUseCase().invoke(Pair(userId, user) as Pair<String, User>)
+                call.respond(response)
+            }
         }
     }
 }

@@ -1,21 +1,19 @@
 package com.himanshoe.base
 
 import com.himanshoe.base.auth.JwtConfig
-import com.himanshoe.base.auth.UserPrincipal
+import com.himanshoe.base.auth.UserIdPrincipalForUser
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 
-fun Application.configureSecurity(jwtConfig: JwtConfig) {
-
-    authentication {
+fun Application.configureSecurity() {
+    install(Authentication) {
         jwt {
-            verifier(jwtConfig.verifier)
-            realm = jwtConfig.realm
+            verifier(JwtConfig.instance.verifier)
             validate {
-                val playerId = it.payload.getClaim(jwtConfig.userId).asString()
-                if (playerId != null) {
-                    UserPrincipal(playerId)
+                val claim = it.payload.getClaim(JwtConfig.ClAIM).asString()
+                if (claim != null) {
+                    UserIdPrincipalForUser(claim)
                 } else {
                     null
                 }
@@ -23,3 +21,4 @@ fun Application.configureSecurity(jwtConfig: JwtConfig) {
         }
     }
 }
+
