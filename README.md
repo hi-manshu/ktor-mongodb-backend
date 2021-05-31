@@ -7,9 +7,9 @@ This project contains,
 * Database Layer (KMongo - Orm for MongoDB)
 * Routing
 * Advanced Routing using Location
-* Status
+* Status for Exception handling
 
-[WIP] - Keep an eye for upadates
+[WIP] - Keep an eye for updates
 
 - Future plan for Testing 
 - Pagination
