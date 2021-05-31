@@ -26,4 +26,8 @@ class ExceptionHandlerImpl : ExceptionHandler {
     override fun respondWithGenericException(message: String?): Exception {
         return SomethingWentWrongException(message)
     }
+
+    override fun respondWithSomethingWentWrongException(message: String): Exception {
+        return SomethingWentWrongException(message)
+    }
 }

@@ -1,6 +1,6 @@
 package com.himanshoe.base.database
 
-import com.himanshoe.posts.Posts
+import com.himanshoe.posts.Post
 import com.himanshoe.user.User
 import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.CoroutineCollection
@@ -16,6 +16,6 @@ interface Database {
 
     val userCollection: CoroutineCollection<User>
 
-    val postCollection: CoroutineCollection<Posts>
+    val postCollection: CoroutineCollection<Post>
 
 }

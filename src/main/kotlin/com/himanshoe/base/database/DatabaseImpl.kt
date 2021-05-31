@@ -1,6 +1,6 @@
 package com.himanshoe.base.database
 
-import com.himanshoe.posts.Posts
+import com.himanshoe.posts.Post
 import com.himanshoe.user.User
 import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.CoroutineCollection
@@ -22,7 +22,7 @@ class DatabaseImpl(private val clientName:String) : Database {
     override val userCollection: CoroutineCollection<User>
         get() = database.getCollection()
 
-    override val postCollection: CoroutineCollection<Posts>
+    override val postCollection: CoroutineCollection<Post>
         get() = database.getCollection()
 
 
