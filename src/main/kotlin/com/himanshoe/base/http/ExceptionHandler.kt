@@ -11,4 +11,7 @@ interface ExceptionHandler {
     fun respondWithAlreadyExistException(message: String?): Exception
 
     fun respondWithGenericException(message: String?): Exception
+
+    fun respondWithSomethingWentWrongException(message: String ="Something went wrong"): Exception
+
 }

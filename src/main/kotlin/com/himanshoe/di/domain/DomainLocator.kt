@@ -4,8 +4,13 @@ import com.himanshoe.auth.domain.CreateUserAuthTokenUseCase
 import com.himanshoe.auth.domain.LoginUserUseCase
 import com.himanshoe.auth.repository.AuthRepository
 import com.himanshoe.di.repository.RepositoryLocator
+import com.himanshoe.posts.domain.AddLikeDislikeUseCase
+import com.himanshoe.posts.domain.CreatePostUseCase
+import com.himanshoe.posts.domain.GetPostsUseCase
+import com.himanshoe.posts.repository.PostsRepository
 import com.himanshoe.user.domain.CurrentUserDetailUseCase
 import com.himanshoe.user.domain.FindUserByIdUseCase
+import com.himanshoe.user.domain.GetUserPostsUseCase
 import com.himanshoe.user.domain.UpdateCurrentUserUseCase
 import com.himanshoe.user.repository.UserRepository
 
@@ -46,6 +51,34 @@ object DomainLocator {
      */
     fun provideUpdateCurrentUserUseCase(userRepository: UserRepository): UpdateCurrentUserUseCase {
         return UpdateCurrentUserUseCase(userRepository)
+    }
+
+    /**
+     * [provideGetUserPostsUseCase] provides the [GetUserPostsUseCase] instance to [DomainProvider]
+     */
+    fun provideGetUserPostsUseCase(userRepository: UserRepository): GetUserPostsUseCase {
+        return GetUserPostsUseCase(userRepository)
+    }
+
+    /**
+     * [provideGetUserPostsUseCase] provides the [GetUserPostsUseCase] instance to [DomainProvider]
+     */
+    fun provideGetPostsUseCase(postsRepository: PostsRepository): GetPostsUseCase {
+        return GetPostsUseCase(postsRepository)
+    }
+
+    /**
+     * [provideCreatePostUseCase] provides the [CreatePostUseCase] instance to [DomainProvider]
+     */
+    fun provideCreatePostUseCase(postsRepository: PostsRepository): CreatePostUseCase {
+        return CreatePostUseCase(postsRepository)
+    }
+
+    /**
+     * [provideCreatePostUseCase] provides the [AddLikeDislikeUseCase] instance to [DomainProvider]
+     */
+    fun provideAddLikeDislikeUseCase(postsRepository: PostsRepository): AddLikeDislikeUseCase {
+        return AddLikeDislikeUseCase(postsRepository)
     }
 
     /**

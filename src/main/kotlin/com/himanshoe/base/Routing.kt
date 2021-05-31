@@ -2,6 +2,7 @@ package com.himanshoe.base
 
 import com.himanshoe.auth.authRoutes
 import com.himanshoe.di.domain.DomainLocator
+import com.himanshoe.posts.postsRoute
 import com.himanshoe.user.userRoutes
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -24,14 +25,8 @@ fun Application.configureRoutingAndSerialization() {
     routing {
         userRoutes(domainLocator.provideDomainProvider())
         authRoutes(domainLocator.provideDomainProvider())
-        authenticate {
-            get("/authenticate") {
-                call.respond(
-                    "get authenticated value from token " +
-                            "name = ${call.request}"
-                )
-            }
-        }
+        postsRoute(domainLocator.provideDomainProvider())
+
     }
 }
 
