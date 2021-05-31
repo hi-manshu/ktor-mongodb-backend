@@ -7,8 +7,8 @@ import com.himanshoe.util.getUserId
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.locations.*
-import io.ktor.locations.put
 import io.ktor.locations.post
+import io.ktor.locations.put
 import io.ktor.response.*
 import io.ktor.routing.*
 
@@ -33,7 +33,9 @@ fun Application.postsRoute(domainProvider: DomainProvider) {
             put<LikeDislikePost> {
                 val userId = getUserId()
                 val post = getBodyContent<LikeDislikeRequest>()
-                call.respond(post)
+                val request = Triple(userId, post.postId, post.liked) as Triple<String, String, Boolean>
+                val response = domainProvider.provideAddLikeDislikeUseCase().invoke(request)
+                call.respond(response)
             }
         }
     }

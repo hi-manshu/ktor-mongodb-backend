@@ -18,6 +18,7 @@ class PostsRepositoryImpl(
     companion object {
         private const val PLEASE_CHECK_THE_PARAMS = "Please check the query params"
         private const val NOT_AUTHORIZED = "Not authorised"
+        private const val ALREADY_LIKED = "Already liked"
         private const val ZERO = 0
         private const val ONE = 1
     }
@@ -43,8 +44,6 @@ class PostsRepositoryImpl(
 
     override suspend fun createPost(userId: String?, post: Post): BaseResponse<Any> {
         if (userId != null) {
-            Logger.d(post)
-            Logger.d(userId)
             val postToBeCreated = Post(title = post.title, post = post.post).copy(
                 createdBy = userId,
                 createdAt = Date().toInstant().toString(),
@@ -60,6 +59,43 @@ class PostsRepositoryImpl(
         } else {
             throw exceptionHandler.respondWithUnauthorizedException(NOT_AUTHORIZED)
         }
+    }
+
+    override suspend fun likeDislikePost(userId: String?, postId: String?, isLiked: Boolean): BaseResponse<Any> {
+        val post = checkIfPostExistWithPostData(postId)
+        if (post.first?.postId == postId && post.second) {
+            if (post.first?.likes?.contains(userId) == true) {
+                if (isLiked) {
+                    throw exceptionHandler.respondWithGenericException(ALREADY_LIKED)
+                } else {
+                    //Delete
+                    throw exceptionHandler.respondWithSomethingWentWrongException()
+                }
+            } else {
+                val likes: List<String> = post.first?.likes?.toMutableList().apply {
+                    userId?.let { this?.add(it) }
+                }?.toList() ?: emptyList()
+                val postUpdated = post.first?.copy(
+                    likes = likes
+                )
+                val isLiked: Boolean =
+                    postId?.let { postUpdated?.let { post -> postCollection.updateOneById(it, post) } }
+                        ?.wasAcknowledged() == true
+                if (isLiked) {
+                    return SuccessResponse(HttpStatusCode.OK, "Liked")
+                } else {
+                    throw exceptionHandler.respondWithSomethingWentWrongException()
+                }
+            }
+        } else {
+            throw exceptionHandler.respondWithSomethingWentWrongException()
+        }
+    }
+
+
+    private suspend fun checkIfPostExistWithPostData(postId: String?): Pair<Post?, Boolean> {
+        val post = postId?.let { postCollection.findOneById(it) }
+        return Pair(post, post != null)
     }
 
 }

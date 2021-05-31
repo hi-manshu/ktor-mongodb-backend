@@ -8,7 +8,7 @@ data class Post(
     val postId: String = ObjectId().toString(),
     val title: String,
     val post: String,
-    val likes: List<Int> = emptyList(),
+    val likes: List<String> = emptyList(),
     val createdAt: String? = null,
     val createdBy: String? = null,
     val updatedAt: String? = null,

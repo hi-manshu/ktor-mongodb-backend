@@ -9,4 +9,6 @@ interface PostsRepository {
 
     suspend fun createPost(userId: String?, post: Post): BaseResponse<Any>
 
+    suspend fun likeDislikePost(userId: String?,postId: String?, isLiked: Boolean): BaseResponse<Any>
+
 }
