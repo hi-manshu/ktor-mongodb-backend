@@ -9,5 +9,9 @@ data class Posts(
     val title: String,
     val post: String,
     val likes: Int = 0,
+    val createdAt: String? = null,
+    val createdBy: String? = null,
+    val updatedAt: String? = null,
+    val shortUrl: String? = null,
     val comments: List<String> = emptyList()
 )

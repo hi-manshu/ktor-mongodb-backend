@@ -3,6 +3,7 @@ package com.himanshoe.di.domain
 import com.himanshoe.auth.domain.CreateUserAuthTokenUseCase
 import com.himanshoe.auth.domain.LoginUserUseCase
 import com.himanshoe.di.repository.RepositoryProvider
+import com.himanshoe.posts.domain.GetPostsUseCase
 import com.himanshoe.user.domain.CurrentUserDetailUseCase
 import com.himanshoe.user.domain.FindUserByIdUseCase
 import com.himanshoe.user.domain.GetUserPostsUseCase
@@ -32,5 +33,9 @@ class DomainProviderImpl(private val repositoryProvider: RepositoryProvider) : D
 
     override fun provideGetUserPostsUseCase(): GetUserPostsUseCase {
         return DomainLocator.provideGetUserPostsUseCase(repositoryProvider.provideUserRepository())
+    }
+
+    override fun provideGetPostsUseCase(): GetPostsUseCase {
+        return DomainLocator.provideGetPostsUseCase(repositoryProvider.providePostsRepository())
     }
 }

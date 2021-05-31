@@ -17,4 +17,5 @@ class CreateUserAuthTokenUseCase(private val authRepository: AuthRepository) : B
     override suspend fun invoke(input: AuthRequest): BaseResponse<Any> {
         return authRepository.createToken(input)
     }
+
 }

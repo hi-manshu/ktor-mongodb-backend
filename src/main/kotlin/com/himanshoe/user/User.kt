@@ -14,8 +14,8 @@ data class User(
     val firstName: String? = null,
     val lastName: String? = null,
     val createdAt: String? = null,
-    val userPosts :List<String> = emptyList(),
-    val updatedAt: String? = null
+    val updatedAt: String? = null,
+    val userPosts :List<String> = emptyList()
 ) {
 
     fun asResponse(): User {

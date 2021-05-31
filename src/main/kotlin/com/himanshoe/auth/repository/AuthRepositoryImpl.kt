@@ -5,6 +5,7 @@ import com.himanshoe.base.auth.JwtConfig
 import com.himanshoe.base.http.ExceptionHandler
 import com.himanshoe.user.User
 import com.himanshoe.util.BaseResponse
+import com.himanshoe.util.SuccessResponse
 import com.himanshoe.util.checkHashForPassword
 import com.himanshoe.util.getHashWithSalt
 import io.ktor.http.*
@@ -42,7 +43,7 @@ class AuthRepositoryImpl(
             val user = User(authRequest.username, hashPassword)
             val responseIsSuccessful = userCollection.insertOne(user).wasAcknowledged()
             when {
-                responseIsSuccessful -> BaseResponse(
+                responseIsSuccessful -> SuccessResponse(
                     data = jwtConfig.makeAccessToken(user.userId),
                     statusCode = HttpStatusCode.Created
                 )
@@ -57,7 +58,7 @@ class AuthRepositoryImpl(
             if (user != null) {
                 val hashedPasswordIsSame = user.passwordHash?.let { checkHashForPassword(authRequest.password, it) }
                 when (hashedPasswordIsSame) {
-                    true -> BaseResponse(
+                    true -> SuccessResponse(
                         data = jwtConfig.makeAccessToken(user.userId),
                         statusCode = HttpStatusCode.OK
                     )
