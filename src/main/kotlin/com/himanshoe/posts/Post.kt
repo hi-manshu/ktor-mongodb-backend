@@ -8,10 +8,15 @@ data class Post(
     val postId: String = ObjectId().toString(),
     val title: String,
     val post: String,
-    val likes: Int = 0,
+    val likes: List<Int> = emptyList(),
     val createdAt: String? = null,
     val createdBy: String? = null,
     val updatedAt: String? = null,
     val shortUrl: String? = null,
+    val isDeleted: Boolean? = false,
     val comments: List<String> = emptyList()
-)
+) {
+    fun asResponse(): Post {
+        return Post(postId, title, post, likes, createdAt, createdBy, updatedAt, shortUrl, null, comments)
+    }
+}

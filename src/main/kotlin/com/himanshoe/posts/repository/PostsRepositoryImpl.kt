@@ -28,6 +28,8 @@ class PostsRepositoryImpl(
             val response = postCollection.find().skip(skips).limit(count)
             val results: List<Post> = response.toList().sortedBy {
                 it.createdAt
+            }.map {
+                it.asResponse()
             }
             val totalCount = postCollection.estimatedDocumentCount().toInt()
             val totalPages = (totalCount.div(count)).plus(ONE)
@@ -51,7 +53,7 @@ class PostsRepositoryImpl(
             val isCreated = postCollection.insertOne(postToBeCreated).wasAcknowledged()
 
             if (isCreated) {
-                return SuccessResponse(statusCode = HttpStatusCode.Created, postToBeCreated)
+                return SuccessResponse(statusCode = HttpStatusCode.Created, postToBeCreated.asResponse())
             } else {
                 throw exceptionHandler.respondWithSomethingWentWrongException()
             }
