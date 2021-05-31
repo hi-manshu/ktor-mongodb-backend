@@ -6,6 +6,7 @@ import com.himanshoe.auth.repository.AuthRepository
 import com.himanshoe.di.repository.RepositoryLocator
 import com.himanshoe.user.domain.CurrentUserDetailUseCase
 import com.himanshoe.user.domain.FindUserByIdUseCase
+import com.himanshoe.user.domain.GetUserPostsUseCase
 import com.himanshoe.user.domain.UpdateCurrentUserUseCase
 import com.himanshoe.user.repository.UserRepository
 
@@ -46,6 +47,13 @@ object DomainLocator {
      */
     fun provideUpdateCurrentUserUseCase(userRepository: UserRepository): UpdateCurrentUserUseCase {
         return UpdateCurrentUserUseCase(userRepository)
+    }
+
+    /**
+     * [provideGetUserPostsUseCase] provides the [GetUserPostsUseCase] instance to [DomainProvider]
+     */
+    fun provideGetUserPostsUseCase(userRepository: UserRepository): GetUserPostsUseCase {
+        return GetUserPostsUseCase(userRepository)
     }
 
     /**

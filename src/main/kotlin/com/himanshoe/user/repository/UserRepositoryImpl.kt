@@ -54,6 +54,15 @@ class UserRepositoryImpl(
 
     }
 
+    override suspend fun fetchUserPosts(userId: String): BaseResponse<Any> {
+        val (user, userExits) = checkIfUsersExistWithUserData(userId)
+        if (userExits) {
+            return BaseResponse(HttpStatusCode.OK, user?.userPosts ?: emptyList())
+        } else {
+            throw exceptionHandler.respondWithNotFoundException(USER_NOT_FOUND)
+        }
+    }
+
     private suspend fun checkIfUsersExistWithUserData(userId: String?): Pair<User?, Boolean> {
         val user = userId?.let { userCollection.findOneById(it) }
         return Pair(user, user != null)

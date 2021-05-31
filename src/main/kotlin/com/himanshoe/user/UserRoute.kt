@@ -7,7 +7,6 @@ import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.locations.*
 import io.ktor.locations.put
-import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
@@ -32,6 +31,11 @@ fun Application.userRoutes(domainProvider: DomainProvider) {
                 val user = getBodyContent<User>()
                 val response =
                     domainProvider.provideUpdateCurrentUserUseCase().invoke(Pair(userId, user) as Pair<String, User>)
+                call.respond(response)
+            }
+
+            get<UserPosts> { request ->
+                val response = domainProvider.provideGetUserPostsUseCase().invoke(request.userId)
                 call.respond(response)
             }
         }

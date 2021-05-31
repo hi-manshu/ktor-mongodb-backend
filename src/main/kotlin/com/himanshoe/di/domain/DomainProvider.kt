@@ -4,6 +4,7 @@ import com.himanshoe.auth.domain.CreateUserAuthTokenUseCase
 import com.himanshoe.auth.domain.LoginUserUseCase
 import com.himanshoe.user.domain.CurrentUserDetailUseCase
 import com.himanshoe.user.domain.FindUserByIdUseCase
+import com.himanshoe.user.domain.GetUserPostsUseCase
 import com.himanshoe.user.domain.UpdateCurrentUserUseCase
 
 interface DomainProvider {
@@ -17,4 +18,6 @@ interface DomainProvider {
     fun provideCurrentUserDetailUseCase(): CurrentUserDetailUseCase
 
     fun provideUpdateCurrentUserUseCase(): UpdateCurrentUserUseCase
+
+    fun provideGetUserPostsUseCase(): GetUserPostsUseCase
 }

@@ -10,3 +10,6 @@ class CurrentUser
 
 @Location(UserConstant.UPDATE_USER)
 class UpdateUser
+
+@Location(UserConstant.USER_POSTS)
+data class UserPosts(val userId: String)
