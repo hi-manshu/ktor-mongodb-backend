@@ -5,6 +5,7 @@ import com.himanshoe.user.User
 import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.SuccessResponse
 import io.ktor.http.*
+import org.bson.conversions.Bson
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
 import org.litote.kmongo.exclude
@@ -69,9 +70,10 @@ class UserRepositoryImpl(
     }
 
     private suspend fun checkIfUsersExistWithUserData(userId: String?): Pair<User?, Boolean> {
+        val fields: Bson = fields(exclude(User::passwordHash))
         val user = userId?.let {
             userCollection.find(User::userId eq userId)
-                .projection(fields(exclude(User::passwordHash)))
+                .projection(fields)
                 .first()
         }
         return Pair(user, user != null)

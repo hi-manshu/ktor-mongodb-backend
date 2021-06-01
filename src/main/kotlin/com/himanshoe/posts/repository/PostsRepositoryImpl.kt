@@ -101,7 +101,6 @@ class PostsRepositoryImpl(
 
 
     private suspend fun checkIfPostExistWithPostData(postId: String?): Pair<Post?, Boolean> {
-        val fields: Bson = fields(exclude(User::passwordHash))
         val post = postId?.let { postCollection.findOneById(it) }
         return Pair(post, post != null)
     }
