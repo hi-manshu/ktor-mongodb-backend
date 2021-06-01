@@ -4,7 +4,7 @@ import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
 
 data class User(
-    val username: String = "",
+    val username: String?=null,
     val passwordHash: String? = null,
     @BsonId
     val userId: String = ObjectId().toString(),

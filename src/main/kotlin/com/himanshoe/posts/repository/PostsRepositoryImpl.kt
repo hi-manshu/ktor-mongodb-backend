@@ -4,15 +4,20 @@ import com.himanshoe.base.http.ExceptionHandler
 import com.himanshoe.posts.Post
 import com.himanshoe.user.User
 import com.himanshoe.util.BaseResponse
+import com.himanshoe.util.Logger
 import com.himanshoe.util.PaginatedResponse
 import com.himanshoe.util.SuccessResponse
+import com.mongodb.client.model.Aggregates
+import com.mongodb.client.model.UnwindOptions
 import io.ktor.http.*
-import org.bson.conversions.Bson
 import org.litote.kmongo.coroutine.CoroutineCollection
-import org.litote.kmongo.coroutine.projection
-import org.litote.kmongo.exclude
-import org.litote.kmongo.fields
+import org.litote.kmongo.coroutine.aggregate
+import org.litote.kmongo.from
+import org.litote.kmongo.lookup
+import org.litote.kmongo.project
+import org.litote.kmongo.unwind
 import java.util.*
+import kotlin.reflect.full.memberProperties
 
 class PostsRepositoryImpl(
     private val postCollection: CoroutineCollection<Post>,
@@ -31,7 +36,9 @@ class PostsRepositoryImpl(
     override suspend fun fetchPosts(page: Int, count: Int): BaseResponse<Any> {
         if (page > ZERO && count > ZERO) {
             val skips = page.minus(ONE) * count
-            val response = postCollection.find().skip(skips).limit(count)
+            val response = postCollection.find()
+                .skip(skips)
+                .limit(count)
             val results: List<Post> = response.toList().sortedBy {
                 it.createdAt
             }.map {
@@ -42,8 +49,7 @@ class PostsRepositoryImpl(
             val totalPages = (totalCount.div(count)).plus(ONE)
             val next = if (results.isNotEmpty()) page.plus(ONE) else null
             val prev = if (page > ZERO) page.minus(ONE) else null
-
-            return PaginatedResponse(statusCode = HttpStatusCode.OK, prev, next, totalCount, totalPages, results)
+            return PaginatedResponse(statusCode = HttpStatusCode.OK, 0, 0, 0, 0, results)
         } else {
             throw exceptionHandler.respondWithGenericException(PLEASE_CHECK_THE_PARAMS)
         }
