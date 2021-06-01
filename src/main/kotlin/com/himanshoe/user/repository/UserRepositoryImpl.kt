@@ -6,6 +6,9 @@ import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.SuccessResponse
 import io.ktor.http.*
 import org.litote.kmongo.coroutine.CoroutineCollection
+import org.litote.kmongo.eq
+import org.litote.kmongo.exclude
+import org.litote.kmongo.fields
 import java.util.*
 
 class UserRepositoryImpl(
@@ -22,7 +25,7 @@ class UserRepositoryImpl(
     override suspend fun findUserById(userId: String?): BaseResponse<Any> {
         val (user, doExist) = checkIfUsersExistWithUserData(userId)
         if (userId != null && doExist) {
-            return SuccessResponse(HttpStatusCode.Found, user?.asResponse())
+            return SuccessResponse(HttpStatusCode.Found, user)
         } else {
             throw exceptionHandler.respondWithNotFoundException(USER_NOT_FOUND)
         }
@@ -31,7 +34,8 @@ class UserRepositoryImpl(
     override suspend fun currentUser(userId: String?): BaseResponse<Any> {
         val (user, doExist) = checkIfUsersExistWithUserData(userId)
         if (userId != null && doExist) {
-            return SuccessResponse(HttpStatusCode.Found, user?.asResponse())
+
+            return SuccessResponse(HttpStatusCode.Found, user)
         } else {
             throw exceptionHandler.respondWithNotFoundException(USER_NOT_FOUND)
         }
@@ -65,7 +69,11 @@ class UserRepositoryImpl(
     }
 
     private suspend fun checkIfUsersExistWithUserData(userId: String?): Pair<User?, Boolean> {
-        val user = userId?.let { userCollection.findOneById(it) }
+        val user = userId?.let {
+            userCollection.find(User::userId eq userId)
+                .projection(fields(exclude(User::passwordHash)))
+                .first()
+        }
         return Pair(user, user != null)
     }
 }

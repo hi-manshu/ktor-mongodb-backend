@@ -23,6 +23,7 @@ object RepositoryLocator {
     fun providePostsRepository(): PostsRepository {
         return PostsRepositoryImpl(
             DatabaseLocator.provideDatabase().postCollection,
+            DatabaseLocator.provideDatabase().userCollection,
             ServiceLocator.provideExceptionHandler()
         )
     }
