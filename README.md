@@ -8,9 +8,9 @@ This project contains,
 * Routing
 * Advanced Routing using Location
 * Status for Exception handling
+* Pagination
 
 [WIP] - Keep an eye for updates
 
 - Future plan for Testing 
-- Pagination
 - And a lot of cool blogs 
