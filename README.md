@@ -10,6 +10,8 @@ This project contains,
 * Status for Exception handling
 * Pagination
 
+<img src=https://github.com/hi-manshu/ktor-mongodb-backend/blob/master/imgs/arch-diagram.png>
+
 [WIP] - Keep an eye for updates
 
 - Future plan for Testing 
