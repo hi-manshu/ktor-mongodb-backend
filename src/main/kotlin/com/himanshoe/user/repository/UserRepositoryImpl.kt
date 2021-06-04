@@ -2,24 +2,19 @@ package com.himanshoe.user.repository
 
 import com.himanshoe.base.http.ExceptionHandler
 import com.himanshoe.user.User
+import com.himanshoe.user.service.UserApiService
 import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.SuccessResponse
 import io.ktor.http.*
-import org.bson.conversions.Bson
-import org.litote.kmongo.coroutine.CoroutineCollection
-import org.litote.kmongo.eq
-import org.litote.kmongo.exclude
-import org.litote.kmongo.fields
 import java.util.*
 
 class UserRepositoryImpl(
-    private val userCollection: CoroutineCollection<User>,
+    private val userApiService: UserApiService,
     private val exceptionHandler: ExceptionHandler
 ) : UserRepository {
 
     companion object {
         private const val USER_NOT_FOUND = "User not found"
-        private const val TOKEN_NOT_FOUND = "Token cannot be null or empty"
         private const val CANNOT_UPDATE = "You cannot update the data"
     }
 
@@ -35,7 +30,6 @@ class UserRepositoryImpl(
     override suspend fun currentUser(userId: String?): BaseResponse<Any> {
         val (user, doExist) = checkIfUsersExistWithUserData(userId)
         if (userId != null && doExist) {
-
             return SuccessResponse(HttpStatusCode.Found, user)
         } else {
             throw exceptionHandler.respondWithNotFoundException(USER_NOT_FOUND)
@@ -51,8 +45,7 @@ class UserRepositoryImpl(
                 passwordHash = userToBeUpdated.passwordHash,
                 updatedAt = Date().toInstant().toString()
             )
-            val isUpdated =
-                userCollection.updateOneById(userId, userUpdated, updateOnlyNotNullProperties = true).wasAcknowledged()
+            val isUpdated = userApiService.updateUserById(userId, userUpdated)
             return SuccessResponse(HttpStatusCode.OK, isUpdated)
         } else {
             throw exceptionHandler.respondWithGenericException(CANNOT_UPDATE)
@@ -70,12 +63,7 @@ class UserRepositoryImpl(
     }
 
     private suspend fun checkIfUsersExistWithUserData(userId: String?): Pair<User?, Boolean> {
-        val fields: Bson = fields(exclude(User::passwordHash))
-        val user = userId?.let {
-            userCollection.find(User::userId eq userId)
-                .projection(fields)
-                .first()
-        }
+        val user = userId?.let { userApiService.findUserByUserId(it) }
         return Pair(user, user != null)
     }
 }

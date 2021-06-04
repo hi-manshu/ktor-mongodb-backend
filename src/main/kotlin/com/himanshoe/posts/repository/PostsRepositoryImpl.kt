@@ -3,24 +3,19 @@ package com.himanshoe.posts.repository
 import com.himanshoe.base.http.ExceptionHandler
 import com.himanshoe.posts.Post
 import com.himanshoe.posts.PostList
+import com.himanshoe.posts.service.PostApiService
 import com.himanshoe.posts.toPostWithUser
 import com.himanshoe.posts.toPostWithUserDetails
-import com.himanshoe.user.User
+import com.himanshoe.user.service.UserApiService
 import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.PaginatedResponse
 import com.himanshoe.util.SuccessResponse
-import com.mongodb.client.model.UnwindOptions
 import io.ktor.http.*
-import org.bson.conversions.Bson
-import org.litote.kmongo.*
-import org.litote.kmongo.coroutine.CoroutineCollection
-import org.litote.kmongo.coroutine.aggregate
 import java.util.*
-import kotlin.reflect.full.memberProperties
 
 class PostsRepositoryImpl(
-    private val postCollection: CoroutineCollection<Post>,
-    private val userCollection: CoroutineCollection<User>,
+    private val postApiService: PostApiService,
+    private val userApiService: UserApiService,
     private val exceptionHandler: ExceptionHandler
 ) : PostsRepository {
 
@@ -31,49 +26,18 @@ class PostsRepositoryImpl(
         private const val POST_NOT_FOUND = "Post not found"
         private const val ZERO = 0
         private const val ONE = 1
-        private const val USER = "user"
-        private const val CREATED_BY = "createdBy"
-        private const val CREATED_BY_USER = "createdByUser"
-        private const val ID = "_id"
-        private const val DOLLAR = "$"
-
-        private val lookUpBson = lookup(
-            from = USER,
-            localField = CREATED_BY,
-            foreignField = ID,
-            newAs = CREATED_BY_USER
-        )
-
-        private val projectBson = project(
-            Post::createdByUser from "$DOLLAR$CREATED_BY_USER",
-            *Post::class.memberProperties
-                .filter { it != Post::createdByUser }
-                .map { it from it }.toTypedArray(),
-        )
     }
 
     override suspend fun fetchPosts(page: Int, count: Int): BaseResponse<Any> {
         if (page > ZERO && count > ZERO) {
 
-            val skips = page.minus(ONE) * count
+            val postList: Pair<List<Post>, Int> = postApiService.fetchPosts(page, count)
 
-            val fields: Bson = fields(exclude(Post::isDeleted))
-
-            val postList = postCollection.aggregate<Post>(
-                skip(skips),
-                limit(count),
-                project(fields),
-                sort(ascending(Post::createdAt)),
-                lookUpBson,
-                unwind("$DOLLAR$CREATED_BY_USER", UnwindOptions().preserveNullAndEmptyArrays(true)),
-                projectBson,
-            ).toList()
-
-            val response: List<PostList> = postList.map {
-                it.toPostWithUser(userCollection, postList)
+            val response: List<PostList> = postList.first.map {
+                it.toPostWithUser(userApiService, postList.first)
             }
 
-            val totalCount = postCollection.estimatedDocumentCount().toInt()
+            val totalCount = postList.second
             val totalPages = (totalCount.div(count)).plus(ONE)
             val next = if (response.isNotEmpty()) page.plus(ONE) else null
             val prev = if (page > ZERO) page.minus(ONE) else null
@@ -90,7 +54,7 @@ class PostsRepositoryImpl(
                 createdAt = Date().toInstant().toString(),
                 updatedAt = Date().toInstant().toString()
             )
-            val isCreated = postCollection.insertOne(postToBeCreated).wasAcknowledged()
+            val isCreated = postApiService.createPost(userId, postToBeCreated)
 
             if (isCreated) {
                 return SuccessResponse(statusCode = HttpStatusCode.Created, postToBeCreated.asResponse())
@@ -103,10 +67,12 @@ class PostsRepositoryImpl(
     }
 
     override suspend fun findPostById(postId: String?): BaseResponse<Any> {
-        val post: Pair<Post?, Boolean> = checkIfPostExistWithPostData(postId)
-        if (post.second) {
-            return SuccessResponse(HttpStatusCode.OK,
-                post.first?.likes?.let { post.first?.toPostWithUserDetails(userCollection, it) })
+        val post = postApiService.findPostById(postId)
+        if (post != null) {
+            return SuccessResponse(
+                HttpStatusCode.OK,
+                post.toPostWithUserDetails(userApiService, post.likes)
+            )
         } else {
             throw exceptionHandler.respondWithNotFoundException(POST_NOT_FOUND)
         }
@@ -119,20 +85,26 @@ class PostsRepositoryImpl(
                 if (isLiked) {
                     throw exceptionHandler.respondWithGenericException(ALREADY_LIKED)
                 } else {
-                    //Delete
-                    throw exceptionHandler.respondWithSomethingWentWrongException()
+                    val likes: List<String> = post.first?.likes?.toMutableList().apply {
+                        if (userId?.let { this?.contains(it) } == true) {
+                            this?.remove(userId)
+                        }
+                    }?.toList() ?: emptyList()
+
+                    val isDislikedUpdated = postApiService.dislikePost(postId, likes)
+                    if (isDislikedUpdated == true) {
+                        return SuccessResponse(HttpStatusCode.OK, "Disliked Post")
+                    } else {
+                        throw exceptionHandler.respondWithSomethingWentWrongException()
+                    }
                 }
             } else {
                 val likes: List<String> = post.first?.likes?.toMutableList().apply {
                     userId?.let { this?.add(it) }
                 }?.toList() ?: emptyList()
-                val postUpdated = post.first?.copy(
-                    likes = likes
-                )
-                val isLiked: Boolean =
-                    postId?.let { postUpdated?.let { post -> postCollection.updateOneById(it, post) } }
-                        ?.wasAcknowledged() == true
-                if (isLiked) {
+
+                val isLikedUpdated = postApiService.likePost(postId, likes)
+                if (isLikedUpdated == true) {
                     return SuccessResponse(HttpStatusCode.OK, "Liked")
                 } else {
                     throw exceptionHandler.respondWithSomethingWentWrongException()
@@ -145,7 +117,7 @@ class PostsRepositoryImpl(
 
 
     private suspend fun checkIfPostExistWithPostData(postId: String?): Pair<Post?, Boolean> {
-        val post = postId?.let { postCollection.findOneById(it) }
+        val post = postApiService.findPostById(postId)
         return Pair(post, post != null)
     }
 }

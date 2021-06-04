@@ -1,13 +1,9 @@
 package com.himanshoe.posts
 
 import com.himanshoe.user.User
-import org.bson.conversions.Bson
-import org.litote.kmongo.coroutine.CoroutineCollection
-import org.litote.kmongo.exclude
-import org.litote.kmongo.fields
-import org.litote.kmongo.util.KMongoUtil
+import com.himanshoe.user.service.UserApiService
 
-suspend fun Post.toPostWithUser(userCollection: CoroutineCollection<User>, response: List<Post>): PostList {
+suspend fun Post.toPostWithUser(userApiService: UserApiService, response: List<Post>): PostList {
     val invertedCommas = '"'
 
     val likes: List<String> = response.map { posts ->
@@ -15,34 +11,26 @@ suspend fun Post.toPostWithUser(userCollection: CoroutineCollection<User>, respo
             "$invertedCommas$userId$invertedCommas"
         }
     }.flatten()
-    return this.remodelPostList(likes, userCollection)
+    return this.remodelPostList(likes, userApiService)
 }
 
-suspend fun Post.toPostWithUserDetails(userCollection: CoroutineCollection<User>, likesList: List<String>): PostList {
+suspend fun Post.toPostWithUserDetails(userApiService: UserApiService, likesList: List<String>): PostList {
     val invertedCommas = '"'
 
     val likes: List<String> = likesList.map { userId ->
         "$invertedCommas$userId$invertedCommas"
     }
-    return this.remodelPostList(likes, userCollection)
+    return this.remodelPostList(likes, userApiService)
 
 }
 
-private suspend fun Post.remodelPostList(likes: List<String>, userCollection: CoroutineCollection<User>): PostList {
-    val fieldsToBeExcluded: Bson =
-        fields(exclude(User::passwordHash, User::role, User::userPosts, User::updatedAt, User::age, User::gender))
-    val filter = """{_id : {${'$'}in: $likes}}"""
-    val postListUsers: List<User> = userCollection
-        .findAndCast<User>(
-            KMongoUtil.toBson(filter)
-        ).projection(fieldsToBeExcluded)
-        .toList()
-
+private suspend fun Post.remodelPostList(userIds: List<String>, userApiService: UserApiService): PostList {
+    val users: List<User> = userApiService.populate(userIds)
     return PostList(
         postId,
         title,
         post,
-        postListUsers,
+        users,
         createdAt,
         createdBy,
         updatedAt,
