@@ -1,16 +1,16 @@
 package com.himanshoe.di.repository
 
-import com.himanshoe.auth.repository.AuthRepository
-import com.himanshoe.auth.repository.AuthRepositoryImpl
+import com.himanshoe.feature.auth.repository.AuthRepository
+import com.himanshoe.feature.auth.repository.AuthRepositoryImpl
 import com.himanshoe.base.auth.JwtConfig
 import com.himanshoe.di.ConfigLocator
 import com.himanshoe.di.service.ServiceLocator
-import com.himanshoe.posts.repository.PostsRepository
-import com.himanshoe.posts.repository.PostsRepositoryImpl
-import com.himanshoe.posts.service.PostApiService
-import com.himanshoe.user.repository.UserRepository
-import com.himanshoe.user.repository.UserRepositoryImpl
-import com.himanshoe.user.service.UserApiService
+import com.himanshoe.feature.posts.repository.PostsRepository
+import com.himanshoe.feature.posts.repository.PostsRepositoryImpl
+import com.himanshoe.feature.posts.service.PostApiService
+import com.himanshoe.feature.user.repository.UserRepository
+import com.himanshoe.feature.user.repository.UserRepositoryImpl
+import com.himanshoe.feature.user.service.UserApiService
 
 object RepositoryLocator {
 

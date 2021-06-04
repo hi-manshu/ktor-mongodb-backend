@@ -1,9 +1,9 @@
 package com.himanshoe.di.repository
 
-import com.himanshoe.auth.repository.AuthRepository
+import com.himanshoe.feature.auth.repository.AuthRepository
 import com.himanshoe.di.service.ServiceProvider
-import com.himanshoe.posts.repository.PostsRepository
-import com.himanshoe.user.repository.UserRepository
+import com.himanshoe.feature.posts.repository.PostsRepository
+import com.himanshoe.feature.user.repository.UserRepository
 
 class RepositoryProviderImpl(private val serviceProvider: ServiceProvider) : RepositoryProvider {
 

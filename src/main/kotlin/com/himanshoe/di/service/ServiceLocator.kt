@@ -1,11 +1,14 @@
 package com.himanshoe.di.service
 
-import com.himanshoe.posts.Post
-import com.himanshoe.posts.service.PostApiService
-import com.himanshoe.posts.service.PostApiServiceImpl
-import com.himanshoe.user.User
-import com.himanshoe.user.service.UserApiService
-import com.himanshoe.user.service.UserApiServiceImpl
+import com.himanshoe.feature.comment.Comment
+import com.himanshoe.feature.comment.service.CommentApiService
+import com.himanshoe.feature.comment.service.CommentApiServiceImpl
+import com.himanshoe.feature.posts.Post
+import com.himanshoe.feature.posts.service.PostApiService
+import com.himanshoe.feature.posts.service.PostApiServiceImpl
+import com.himanshoe.feature.user.User
+import com.himanshoe.feature.user.service.UserApiService
+import com.himanshoe.feature.user.service.UserApiServiceImpl
 import org.litote.kmongo.coroutine.CoroutineCollection
 
 object ServiceLocator {
@@ -16,6 +19,10 @@ object ServiceLocator {
 
     fun provideUserApiService(userCollection: CoroutineCollection<User>): UserApiService {
         return UserApiServiceImpl(userCollection)
+    }
+
+    fun provideCommentApiService(commentCollection: CoroutineCollection<Comment>):CommentApiService{
+        return CommentApiServiceImpl(commentCollection)
     }
 
     fun provideServiceProvider(): ServiceProvider {

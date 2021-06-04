@@ -1,8 +1,8 @@
 package com.himanshoe.di.service
 
 import com.himanshoe.di.database.DatabaseLocator
-import com.himanshoe.posts.service.PostApiService
-import com.himanshoe.user.service.UserApiService
+import com.himanshoe.feature.posts.service.PostApiService
+import com.himanshoe.feature.user.service.UserApiService
 
 class ServiceProviderImpl : ServiceProvider {
 

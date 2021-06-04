@@ -1,16 +1,16 @@
 package com.himanshoe.di.domain
 
-import com.himanshoe.auth.domain.CreateUserAuthTokenUseCase
-import com.himanshoe.auth.domain.LoginUserUseCase
-import com.himanshoe.auth.repository.AuthRepository
+import com.himanshoe.feature.auth.domain.CreateUserAuthTokenUseCase
+import com.himanshoe.feature.auth.domain.LoginUserUseCase
+import com.himanshoe.feature.auth.repository.AuthRepository
 import com.himanshoe.di.repository.RepositoryLocator
-import com.himanshoe.posts.domain.*
-import com.himanshoe.posts.repository.PostsRepository
-import com.himanshoe.user.domain.CurrentUserDetailUseCase
-import com.himanshoe.user.domain.FindUserByIdUseCase
-import com.himanshoe.user.domain.GetUserPostsUseCase
-import com.himanshoe.user.domain.UpdateCurrentUserUseCase
-import com.himanshoe.user.repository.UserRepository
+import com.himanshoe.feature.posts.domain.*
+import com.himanshoe.feature.posts.repository.PostsRepository
+import com.himanshoe.feature.user.domain.CurrentUserDetailUseCase
+import com.himanshoe.feature.user.domain.FindUserByIdUseCase
+import com.himanshoe.feature.user.domain.GetUserPostsUseCase
+import com.himanshoe.feature.user.domain.UpdateCurrentUserUseCase
+import com.himanshoe.feature.user.repository.UserRepository
 
 /**
  * [DomainLocator] creates a collection of instances of all the domains
