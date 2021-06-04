@@ -1,3 +1,11 @@
 package com.himanshoe.auth
 
-class AuthLocation
+import io.ktor.locations.*
+
+@KtorExperimentalLocationsAPI
+@Location(AuthConstant.LOGIN)
+class LoginUser
+
+@KtorExperimentalLocationsAPI
+@Location(AuthConstant.REGISTER)
+class RegisterUser
