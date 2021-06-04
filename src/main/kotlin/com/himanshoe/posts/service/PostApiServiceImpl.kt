@@ -84,4 +84,12 @@ class PostApiServiceImpl(
 
     }
 
+    override suspend fun deletePost(postId: String?): Boolean? {
+        return if (postId != null) {
+            postCollection.deleteOneById(postId).wasAcknowledged()
+        } else {
+            false
+        }
+    }
+
 }

@@ -2,10 +2,7 @@ package com.himanshoe.di.domain
 
 import com.himanshoe.auth.domain.CreateUserAuthTokenUseCase
 import com.himanshoe.auth.domain.LoginUserUseCase
-import com.himanshoe.posts.domain.AddLikeDislikeUseCase
-import com.himanshoe.posts.domain.CreatePostUseCase
-import com.himanshoe.posts.domain.FindPostUseCase
-import com.himanshoe.posts.domain.GetPostsUseCase
+import com.himanshoe.posts.domain.*
 import com.himanshoe.user.domain.CurrentUserDetailUseCase
 import com.himanshoe.user.domain.FindUserByIdUseCase
 import com.himanshoe.user.domain.GetUserPostsUseCase
@@ -32,4 +29,6 @@ interface DomainProvider {
     fun provideFindPostByIdUseCase(): FindPostUseCase
 
     fun provideAddLikeDislikeUseCase(): AddLikeDislikeUseCase
+
+    fun provideDeletePostUseCase(): DeletePostUseCase
 }

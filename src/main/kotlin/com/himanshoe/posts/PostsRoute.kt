@@ -44,7 +44,13 @@ fun Application.postsRoute(domainProvider: DomainProvider) {
                 call.respond(response)
             }
 
-
+            delete<IndividualPost> { request ->
+                val userId = getUserId()
+                val postId = request.postId
+                val response =
+                    domainProvider.provideDeletePostUseCase().invoke(Pair(userId, postId) as Pair<String, String>)
+                call.respond(response)
+            }
         }
     }
 }

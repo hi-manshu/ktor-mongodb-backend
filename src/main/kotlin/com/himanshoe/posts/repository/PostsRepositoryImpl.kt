@@ -115,6 +115,17 @@ class PostsRepositoryImpl(
         }
     }
 
+    override suspend fun deletePost(userId: String?, postId: String?): BaseResponse<Any> {
+        val postData = checkIfPostExistWithPostData(postId)
+        val post = postData.first
+        if (userId == post?.createdBy) {
+            val response = postApiService.deletePost(postId)
+            return SuccessResponse(HttpStatusCode.OK, response)
+        } else {
+            throw exceptionHandler.respondWithUnauthorizedException(NOT_AUTHORIZED)
+        }
+    }
+
 
     private suspend fun checkIfPostExistWithPostData(postId: String?): Pair<Post?, Boolean> {
         val post = postApiService.findPostById(postId)

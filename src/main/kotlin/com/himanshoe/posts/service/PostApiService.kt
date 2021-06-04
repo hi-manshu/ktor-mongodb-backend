@@ -14,4 +14,6 @@ interface PostApiService {
 
     suspend fun dislikePost(postId: String?, likes: List<String>): Boolean?
 
+    suspend fun deletePost(postId: String?): Boolean?
+
 }

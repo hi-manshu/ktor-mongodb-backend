@@ -13,5 +13,4 @@ interface UserRepository {
 
     suspend fun fetchUserPosts(userId: String): BaseResponse<Any>
 
-
 }

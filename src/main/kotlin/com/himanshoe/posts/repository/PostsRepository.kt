@@ -13,4 +13,6 @@ interface PostsRepository {
 
     suspend fun likeDislikePost(userId: String?,postId: String?, isLiked: Boolean): BaseResponse<Any>
 
+    suspend fun deletePost(userId: String?,postId: String?): BaseResponse<Any>
+
 }
