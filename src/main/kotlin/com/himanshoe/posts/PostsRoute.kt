@@ -12,7 +12,6 @@ import io.ktor.locations.put
 import io.ktor.response.*
 import io.ktor.routing.*
 
-
 fun Application.postsRoute(domainProvider: DomainProvider) {
 
     routing {

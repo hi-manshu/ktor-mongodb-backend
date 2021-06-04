@@ -12,6 +12,5 @@ interface ExceptionHandler {
 
     fun respondWithGenericException(message: String?): Exception
 
-    fun respondWithSomethingWentWrongException(message: String ="Something went wrong"): Exception
-
+    fun respondWithSomethingWentWrongException(message: String = "Something went wrong"): Exception
 }

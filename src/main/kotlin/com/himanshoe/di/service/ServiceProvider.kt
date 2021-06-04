@@ -8,5 +8,4 @@ interface ServiceProvider {
     fun providePostApiService(): PostApiService
 
     fun provideUserApiService(): UserApiService
-
 }

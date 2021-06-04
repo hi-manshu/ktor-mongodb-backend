@@ -12,7 +12,6 @@ import io.ktor.locations.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-
 val domainLocator = DomainLocator
 
 fun Application.configureRoutingAndSerialization() {
@@ -28,7 +27,5 @@ fun Application.configureRoutingAndSerialization() {
         userRoutes(domainLocator.provideDomainProvider())
         authRoutes(domainLocator.provideDomainProvider())
         postsRoute(domainLocator.provideDomainProvider())
-
     }
 }
-

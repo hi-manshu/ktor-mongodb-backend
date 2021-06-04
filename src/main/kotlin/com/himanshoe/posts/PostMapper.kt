@@ -21,7 +21,6 @@ suspend fun Post.toPostWithUserDetails(userApiService: UserApiService, likesList
         "$invertedCommas$userId$invertedCommas"
     }
     return this.remodelPostList(likes, userApiService)
-
 }
 
 private suspend fun Post.remodelPostList(userIds: List<String>, userApiService: UserApiService): PostList {

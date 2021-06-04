@@ -1,5 +1,3 @@
 package com.himanshoe
 
-class ApplicationTest {
-
-}
+class ApplicationTest

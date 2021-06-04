@@ -64,7 +64,6 @@ class AuthRepositoryImpl(
                     else -> throw exceptionHandler.respondWithUnauthorizedException(EITHER_USERNAME_PASSWORD_INCORRECT)
                 }
             } else throw exceptionHandler.respondWithUnauthorizedException(NOT_AUTHORIZED)
-
         } else {
             throw exceptionHandler.respondWithUnauthorizedException(USER_DONT_EXIST_MESSAGE)
         }

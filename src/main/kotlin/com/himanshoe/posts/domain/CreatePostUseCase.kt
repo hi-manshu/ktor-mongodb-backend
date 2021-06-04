@@ -9,6 +9,6 @@ class CreatePostUseCase(private val postsRepository: PostsRepository) : BaseUseC
 
     /** Executes this use case with given input. */
     override suspend fun invoke(input: Pair<String?, Post>): BaseResponse<Any> {
-        return postsRepository.createPost(input.first,input.second)
+        return postsRepository.createPost(input.first, input.second)
     }
 }

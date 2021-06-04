@@ -11,5 +11,4 @@ interface AuthRepository {
     suspend fun createToken(authRequest: AuthRequest): BaseResponse<Any>
 
     suspend fun loginUser(authRequest: AuthRequest): BaseResponse<Any>
-
 }

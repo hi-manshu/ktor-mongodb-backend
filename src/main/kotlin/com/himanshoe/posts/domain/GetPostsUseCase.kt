@@ -8,6 +8,6 @@ class GetPostsUseCase(private val postsRepository: PostsRepository) : BaseUseCas
 
     /** Executes this use case with given input. */
     override suspend fun invoke(input: Pair<Int, Int>): BaseResponse<Any> {
-        return postsRepository.fetchPosts(input.first,input.second)
+        return postsRepository.fetchPosts(input.first, input.second)
     }
 }

@@ -21,7 +21,6 @@ data class Post(
     fun asResponse(): Post {
         return Post(postId, title, post, likes, createdAt, createdBy, updatedAt, shortUrl, null, comments)
     }
-
 }
 
 data class PostList(

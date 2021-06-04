@@ -1,4 +1,3 @@
 package com.himanshoe.auth
 
-class AuthLocation {
-}
+class AuthLocation

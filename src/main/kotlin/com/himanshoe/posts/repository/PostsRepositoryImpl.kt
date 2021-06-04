@@ -126,7 +126,6 @@ class PostsRepositoryImpl(
         }
     }
 
-
     private suspend fun checkIfPostExistWithPostData(postId: String?): Pair<Post?, Boolean> {
         val post = postApiService.findPostById(postId)
         return Pair(post, post != null)

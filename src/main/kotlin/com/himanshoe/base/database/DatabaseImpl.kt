@@ -8,7 +8,7 @@ import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
-class DatabaseImpl(private val clientName:String) : Database {
+class DatabaseImpl(private val clientName: String) : Database {
 
     override val initializeName: String
         get() = clientName
@@ -24,6 +24,4 @@ class DatabaseImpl(private val clientName:String) : Database {
 
     override val postCollection: CoroutineCollection<Post>
         get() = database.getCollection()
-
-
 }

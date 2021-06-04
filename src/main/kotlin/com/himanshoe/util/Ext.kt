@@ -14,5 +14,3 @@ fun PipelineContext<*, ApplicationCall>.getUserId(): String? {
 suspend inline fun <reified T : Any> PipelineContext<*, ApplicationCall>.getBodyContent(): T {
     return call.receive()
 }
-
-

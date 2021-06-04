@@ -12,5 +12,4 @@ interface UserRepository {
     suspend fun updateUser(userId: String, user: User): BaseResponse<Any>
 
     suspend fun fetchUserPosts(userId: String): BaseResponse<Any>
-
 }

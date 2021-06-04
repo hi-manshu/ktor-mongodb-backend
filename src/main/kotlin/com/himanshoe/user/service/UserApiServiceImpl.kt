@@ -45,6 +45,5 @@ class UserApiServiceImpl(private val userCollection: CoroutineCollection<User>) 
 
     override suspend fun updateUserById(userId: String, user: User): Boolean? {
         return userCollection.updateOneById(userId, user, updateOnlyNotNullProperties = true).wasAcknowledged()
-
     }
 }

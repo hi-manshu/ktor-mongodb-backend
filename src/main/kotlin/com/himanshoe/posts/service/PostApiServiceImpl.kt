@@ -29,7 +29,7 @@ class PostApiServiceImpl(
         )
 
         private val projectBson = project(
-            Post::createdByUser from "${DOLLAR}${CREATED_BY_USER}",
+            Post::createdByUser from "${DOLLAR}$CREATED_BY_USER",
             *Post::class.memberProperties
                 .filter { it != Post::createdByUser }
                 .map { it from it }.toTypedArray(),
@@ -50,7 +50,8 @@ class PostApiServiceImpl(
                 lookUpBson,
                 unwind("$DOLLAR$CREATED_BY_USER", UnwindOptions().preserveNullAndEmptyArrays(true)),
                 projectBson,
-            ).toList(), postCollection.estimatedDocumentCount().toInt()
+            ).toList(),
+            postCollection.estimatedDocumentCount().toInt()
         )
     }
 
@@ -81,7 +82,6 @@ class PostApiServiceImpl(
             likes = likes
         )
         return postToBeUpdated?.let { postId?.let { id -> postCollection.updateOneById(id, it).wasAcknowledged() } }
-
     }
 
     override suspend fun deletePost(postId: String?): Boolean? {
@@ -91,5 +91,4 @@ class PostApiServiceImpl(
             false
         }
     }
-
 }

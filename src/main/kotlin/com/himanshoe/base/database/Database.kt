@@ -17,5 +17,4 @@ interface Database {
     val userCollection: CoroutineCollection<User>
 
     val postCollection: CoroutineCollection<Post>
-
 }

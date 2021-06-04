@@ -50,7 +50,6 @@ class UserRepositoryImpl(
         } else {
             throw exceptionHandler.respondWithGenericException(CANNOT_UPDATE)
         }
-
     }
 
     override suspend fun fetchUserPosts(userId: String): BaseResponse<Any> {
