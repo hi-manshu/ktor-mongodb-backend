@@ -4,7 +4,7 @@ import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
 
 data class User(
-    val username: String?=null,
+    val username: String? = null,
     val passwordHash: String? = null,
     @BsonId
     val userId: String = ObjectId().toString(),
@@ -13,14 +13,22 @@ data class User(
     val age: Int? = null,
     val firstName: String? = null,
     val lastName: String? = null,
+    val userImageUrl: String? = null,
     val createdAt: String? = null,
     val updatedAt: String? = null,
-    val userPosts :List<String> = emptyList()
+    val userPosts: List<String> = emptyList()
 ) {
 
     fun asResponse(): User {
         return User(username, null, userId, role, null, null, null, null)
     }
+
+    fun toUserForCommentsAndLike(): UserForCommentsAndLike {
+        return UserForCommentsAndLike(
+            username, userId, firstName, lastName, userImageUrl
+        )
+    }
+
 }
 
 enum class Role(val role: String) {
@@ -33,3 +41,12 @@ enum class Gender(val gender: String) {
     Female("female"),
     Either("either"),
 }
+
+data class UserForCommentsAndLike(
+    val username: String? = null,
+    val userId: String? = null,
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val userImageUrl: String? = null,
+)
+
