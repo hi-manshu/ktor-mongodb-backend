@@ -5,7 +5,7 @@ import com.himanshoe.base.configureRoutingAndSerialization
 import com.himanshoe.base.configureSecurity
 import com.himanshoe.base.configureStatusPages
 import com.himanshoe.di.ConfigLocator
-import io.ktor.application.*
+import io.ktor.application.Application
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)

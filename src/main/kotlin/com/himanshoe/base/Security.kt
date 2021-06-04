@@ -3,8 +3,8 @@ package com.himanshoe.base
 import com.himanshoe.base.auth.JwtConfig
 import com.himanshoe.base.auth.UserIdPrincipalForUser
 import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.auth.jwt.*
+import io.ktor.auth.Authentication
+import io.ktor.auth.jwt.jwt
 
 fun Application.configureSecurity() {
     install(Authentication) {

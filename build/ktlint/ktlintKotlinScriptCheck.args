@@ -1,0 +1,5 @@
+--reporter=plain
+--color
+--reporter=plain,output=/Users/himanshusingh/Documents/code/ktor-backend/build/reports/ktlint/ktlintKotlinScriptCheck/ktlintKotlinScriptCheck.txt
+"build.gradle.kts"
+"settings.gradle.kts"

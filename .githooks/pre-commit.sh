@@ -1,0 +1,1 @@
+./gradlew --continue ktlintCheck

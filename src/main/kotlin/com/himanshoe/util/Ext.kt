@@ -1,10 +1,11 @@
 package com.himanshoe.util
 
 import com.himanshoe.base.auth.UserIdPrincipalForUser
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.request.*
-import io.ktor.util.pipeline.*
+import io.ktor.application.ApplicationCall
+import io.ktor.application.call
+import io.ktor.auth.authentication
+import io.ktor.request.receive
+import io.ktor.util.pipeline.PipelineContext
 
 fun PipelineContext<*, ApplicationCall>.getUserId(): String? {
     val principal = this.call.authentication.principal<UserIdPrincipalForUser>()

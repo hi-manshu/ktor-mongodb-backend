@@ -3,7 +3,8 @@ package com.himanshoe.user
 import com.himanshoe.di.domain.DomainProvider
 import com.himanshoe.util.getBodyContent
 import com.himanshoe.util.getUserId
-import io.ktor.application.*
+import io.ktor.application.Application
+import io.ktor.application.call
 import io.ktor.auth.*
 import io.ktor.locations.*
 import io.ktor.locations.put

@@ -4,13 +4,15 @@ import com.himanshoe.di.domain.DomainProvider
 import com.himanshoe.posts.request.LikeDislikeRequest
 import com.himanshoe.util.getBodyContent
 import com.himanshoe.util.getUserId
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.locations.*
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.auth.authenticate
+import io.ktor.locations.get
+import io.ktor.locations.delete
 import io.ktor.locations.post
 import io.ktor.locations.put
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.response.respond
+import io.ktor.routing.routing
 
 fun Application.postsRoute(domainProvider: DomainProvider) {
 

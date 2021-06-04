@@ -4,13 +4,14 @@ import com.himanshoe.auth.authRoutes
 import com.himanshoe.di.domain.DomainLocator
 import com.himanshoe.posts.postsRoute
 import com.himanshoe.user.userRoutes
-import io.ktor.application.*
-import io.ktor.auth.*
+import io.ktor.application.Application
+import io.ktor.application.install
+import io.ktor.locations.Locations
+import io.ktor.routing.Routing
+import io.ktor.routing.routing
 import io.ktor.features.*
 import io.ktor.gson.*
-import io.ktor.locations.*
-import io.ktor.response.*
-import io.ktor.routing.*
+
 
 val domainLocator = DomainLocator
 

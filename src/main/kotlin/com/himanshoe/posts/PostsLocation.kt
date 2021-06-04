@@ -1,6 +1,6 @@
 package com.himanshoe.posts
 
-import io.ktor.locations.*
+import io.ktor.locations.Location
 
 @Location(PostsConstant.POSTS)
 data class PostsList(val page: Int, val count: Int)

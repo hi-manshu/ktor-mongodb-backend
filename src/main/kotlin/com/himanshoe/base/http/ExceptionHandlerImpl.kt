@@ -1,6 +1,10 @@
 package com.himanshoe.base.http
 
-import com.himanshoe.base.*
+import com.himanshoe.base.BadRequestException
+import com.himanshoe.base.AuthorizationException
+import com.himanshoe.base.NotFoundException
+import com.himanshoe.base.ConflictException
+import com.himanshoe.base.SomethingWentWrongException
 
 /**
  * Handles the Exceptions and implements the interface [ExceptionHandler]

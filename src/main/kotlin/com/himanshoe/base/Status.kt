@@ -1,9 +1,11 @@
 package com.himanshoe.base
 
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.http.*
-import io.ktor.response.*
+import io.ktor.application.Application
+import io.ktor.application.install
+import io.ktor.application.call
+import io.ktor.features.StatusPages
+import io.ktor.http.HttpStatusCode
+import io.ktor.response.respond
 
 fun Application.configureStatusPages() {
     install(StatusPages) {

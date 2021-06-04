@@ -1,6 +1,6 @@
 package com.himanshoe.util
 
-import io.ktor.http.*
+import io.ktor.http.HttpStatusCode
 
 interface BaseResponse<T : Any>
 

@@ -1,6 +1,6 @@
 package com.himanshoe.user
 
-import io.ktor.locations.*
+import io.ktor.locations.Location
 
 @Location(UserConstant.USER_INFO)
 data class UserInfo(val userId: String)

@@ -5,8 +5,8 @@ import com.himanshoe.user.User
 import com.himanshoe.user.service.UserApiService
 import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.SuccessResponse
-import io.ktor.http.*
-import java.util.*
+import io.ktor.http.HttpStatusCode
+import java.util.Date
 
 class UserRepositoryImpl(
     private val userApiService: UserApiService,

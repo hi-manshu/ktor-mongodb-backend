@@ -1,7 +1,0 @@
-#!/bin/sh
-set -e
-
-BASEDIR=$(dirname "$0")
-SCRIPTS_DIR=$BASEDIR/pre-commit.d
-
-./"$SCRIPTS_DIR"/ktlint

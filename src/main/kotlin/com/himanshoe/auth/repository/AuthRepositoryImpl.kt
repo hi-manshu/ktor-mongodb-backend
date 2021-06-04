@@ -9,7 +9,7 @@ import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.SuccessResponse
 import com.himanshoe.util.checkHashForPassword
 import com.himanshoe.util.getHashWithSalt
-import io.ktor.http.*
+import io.ktor.http.HttpStatusCode
 
 /**
  * [AuthRepositoryImpl] is a implementation for [AuthRepository]
