@@ -9,13 +9,14 @@ import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.Logger
 import com.himanshoe.util.PaginatedResponse
 import com.himanshoe.util.SuccessResponse
+import com.mongodb.client.model.UnwindOptions
 import io.ktor.http.*
 import org.bson.conversions.Bson
-import org.litote.kmongo.ascending
+import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineCollection
-import org.litote.kmongo.exclude
-import org.litote.kmongo.fields
+import org.litote.kmongo.coroutine.aggregate
 import java.util.*
+import kotlin.reflect.full.memberProperties
 
 class PostsRepositoryImpl(
     private val postCollection: CoroutineCollection<Post>,
@@ -29,23 +30,49 @@ class PostsRepositoryImpl(
         private const val ALREADY_LIKED = "Already liked"
         private const val ZERO = 0
         private const val ONE = 1
+        private const val USER = "user"
+        private const val CREATED_BY = "createdBy"
+        private const val CREATED_BY_USER = "createdByUser"
+        private const val ID = "_id"
     }
 
-    //Todo Populate method to get users from ID
     override suspend fun fetchPosts(page: Int, count: Int): BaseResponse<Any> {
         if (page > ZERO && count > ZERO) {
-            val skips = page.minus(ONE) * count
-            val fields: Bson = fields(exclude(Post::isDeleted))
-            val postList = postCollection.find()
-                .projection(fields)
-                .skip(skips)
-                .limit(count)
-                .sort(ascending(Post::createdAt))
-                .toList()
 
-            val response: List<PostList> = postList.map {
-                it.toPostWithUser(userCollection, postList)
+            val skips = page.minus(ONE) * count
+
+            val fields: Bson = fields(exclude(Post::isDeleted))
+
+            val lookUpBson = lookup(
+                from = USER,
+                localField = CREATED_BY,
+                foreignField = ID,
+                newAs = CREATED_BY_USER
+            )
+
+            val projectBson = project(
+                Post::createdByUser from "$$CREATED_BY_USER",
+                *Post::class.memberProperties
+                    .filter { it != Post::createdByUser }
+                    .map { it from it }.toTypedArray()
+            )
+
+            val postAggregated = postCollection.aggregate<Post>(
+                skip(skips),
+                limit(count),
+                project(fields),
+                sort(ascending(Post::createdAt)),
+                lookUpBson,
+                unwind("$$CREATED_BY_USER", UnwindOptions().preserveNullAndEmptyArrays(true)),
+                projectBson,
+            ).toList()
+
+
+            val response: List<PostList> = postAggregated.map {
+                it.toPostWithUser(userCollection, postAggregated)
             }
+            Logger.d(response)
+
 
             val totalCount = postCollection.estimatedDocumentCount().toInt()
             val totalPages = (totalCount.div(count)).plus(ONE)

@@ -8,7 +8,7 @@ data class User(
     val passwordHash: String? = null,
     @BsonId
     val userId: String = ObjectId().toString(),
-    val role: String = Role.Creator.role,
+    val role: String?=null,
     val gender: String? = null,
     val age: Int? = null,
     val firstName: String? = null,
@@ -16,20 +16,8 @@ data class User(
     val userImageUrl: String? = null,
     val createdAt: String? = null,
     val updatedAt: String? = null,
-    val userPosts: List<String> = emptyList()
-) {
-
-    fun asResponse(): User {
-        return User(username, null, userId, role, null, null, null, null)
-    }
-
-    fun toUserForCommentsAndLike(): UserForCommentsAndLike {
-        return UserForCommentsAndLike(
-            username, userId, firstName, lastName, userImageUrl
-        )
-    }
-
-}
+    val userPosts: List<String>?=null
+)
 
 enum class Role(val role: String) {
     Creator("creator"),
@@ -41,12 +29,3 @@ enum class Gender(val gender: String) {
     Female("female"),
     Either("either"),
 }
-
-data class UserForCommentsAndLike(
-    val username: String? = null,
-    val userId: String? = null,
-    val firstName: String? = null,
-    val lastName: String? = null,
-    val userImageUrl: String? = null,
-)
-
