@@ -2,14 +2,28 @@ val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
 val kmongo_version: String by project
+val klint_version: String by project
+
+buildscript {
+
+    repositories {
+        maven { url = uri("https://plugins.gradle.org/m2/") }
+        jcenter()
+    }
+    dependencies {
+        classpath("org.jlleitschuh.gradle:ktlint-gradle:9.4.1")
+    }
+}
 
 plugins {
     application
     kotlin("jvm") version "1.5.10"
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 group = "com.himanshoe"
 version = "0.0.1"
+
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 }
@@ -30,4 +44,10 @@ dependencies {
     implementation("commons-codec:commons-codec:1.14")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
+}
+
+tasks.register("configureGithooks") {
+    exec {
+        commandLine("git config core.hooksPath .githooks".split(' '))
+    }
 }

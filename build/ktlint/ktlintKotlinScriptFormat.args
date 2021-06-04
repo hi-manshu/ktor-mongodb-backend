@@ -1,0 +1,6 @@
+--reporter=plain
+--color
+--reporter=plain,output=/Users/himanshusingh/Documents/code/ktor-backend/build/reports/ktlint/ktlintKotlinScriptFormat/ktlintKotlinScriptFormat.txt
+-F
+"build.gradle.kts"
+"settings.gradle.kts"
