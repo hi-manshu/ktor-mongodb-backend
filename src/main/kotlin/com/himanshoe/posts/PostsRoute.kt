@@ -22,6 +22,12 @@ fun Application.postsRoute(domainProvider: DomainProvider) {
             call.respond(response)
         }
 
+        get<IndividualPost> { request ->
+            val postId = request.postId
+            val response = domainProvider.provideFindPostByIdUseCase().invoke(postId)
+            call.respond(response)
+        }
+
         authenticate {
 
             post<CreatePost> {
@@ -35,6 +41,14 @@ fun Application.postsRoute(domainProvider: DomainProvider) {
                 val post = getBodyContent<LikeDislikeRequest>()
                 val request = Triple(userId, post.postId, post.liked) as Triple<String, String, Boolean>
                 val response = domainProvider.provideAddLikeDislikeUseCase().invoke(request)
+                call.respond(response)
+            }
+
+            delete<IndividualPost> { request ->
+                val userId = getUserId()
+                val postId = request.postId
+                val response =
+                    domainProvider.provideDeletePostUseCase().invoke(Pair(userId, postId) as Pair<String, String>)
                 call.respond(response)
             }
         }

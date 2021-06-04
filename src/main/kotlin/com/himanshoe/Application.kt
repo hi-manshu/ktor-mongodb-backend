@@ -4,7 +4,7 @@ import com.himanshoe.base.configureHTTP
 import com.himanshoe.base.configureRoutingAndSerialization
 import com.himanshoe.base.configureSecurity
 import com.himanshoe.base.configureStatusPages
-import com.himanshoe.di.ServiceLocator
+import com.himanshoe.di.ConfigLocator
 import io.ktor.application.*
 
 fun main(args: Array<String>): Unit =
@@ -15,12 +15,12 @@ fun main(args: Array<String>): Unit =
  * Also note that you can have more then one modules in your application.
  * */
 
-private val serviceLocator = ServiceLocator
+private val serviceLocator = ConfigLocator
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    ServiceLocator.provideJwtConfig()
+    ConfigLocator.provideJwtConfig()
     configureStatusPages()
     configureSecurity()
     configureRoutingAndSerialization()

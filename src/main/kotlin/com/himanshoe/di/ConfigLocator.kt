@@ -4,7 +4,7 @@ import com.himanshoe.base.auth.JwtConfig
 import com.himanshoe.base.http.ExceptionHandler
 import com.himanshoe.base.http.ExceptionHandlerImpl
 
-object ServiceLocator {
+object ConfigLocator {
 
     fun provideJwtConfig() {
         return JwtConfig.initialize("ktor-backend")

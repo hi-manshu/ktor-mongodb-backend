@@ -9,6 +9,10 @@ interface PostsRepository {
 
     suspend fun createPost(userId: String?, post: Post): BaseResponse<Any>
 
+    suspend fun findPostById(postId: String?): BaseResponse<Any>
+
     suspend fun likeDislikePost(userId: String?,postId: String?, isLiked: Boolean): BaseResponse<Any>
+
+    suspend fun deletePost(userId: String?,postId: String?): BaseResponse<Any>
 
 }
