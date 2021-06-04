@@ -6,7 +6,6 @@ import com.himanshoe.posts.PostList
 import com.himanshoe.posts.toPostWithUser
 import com.himanshoe.user.User
 import com.himanshoe.util.BaseResponse
-import com.himanshoe.util.Logger
 import com.himanshoe.util.PaginatedResponse
 import com.himanshoe.util.SuccessResponse
 import com.mongodb.client.model.UnwindOptions
@@ -34,6 +33,7 @@ class PostsRepositoryImpl(
         private const val CREATED_BY = "createdBy"
         private const val CREATED_BY_USER = "createdByUser"
         private const val ID = "_id"
+        private const val DOLLAR = "$"
     }
 
     override suspend fun fetchPosts(page: Int, count: Int): BaseResponse<Any> {
@@ -51,10 +51,10 @@ class PostsRepositoryImpl(
             )
 
             val projectBson = project(
-                Post::createdByUser from "$$CREATED_BY_USER",
+                Post::createdByUser from "$DOLLAR$CREATED_BY_USER",
                 *Post::class.memberProperties
                     .filter { it != Post::createdByUser }
-                    .map { it from it }.toTypedArray()
+                    .map { it from it }.toTypedArray(),
             )
 
             val postAggregated = postCollection.aggregate<Post>(
@@ -63,7 +63,7 @@ class PostsRepositoryImpl(
                 project(fields),
                 sort(ascending(Post::createdAt)),
                 lookUpBson,
-                unwind("$$CREATED_BY_USER", UnwindOptions().preserveNullAndEmptyArrays(true)),
+                unwind("$DOLLAR$CREATED_BY_USER", UnwindOptions().preserveNullAndEmptyArrays(true)),
                 projectBson,
             ).toList()
 
@@ -71,7 +71,6 @@ class PostsRepositoryImpl(
             val response: List<PostList> = postAggregated.map {
                 it.toPostWithUser(userCollection, postAggregated)
             }
-            Logger.d(response)
 
 
             val totalCount = postCollection.estimatedDocumentCount().toInt()

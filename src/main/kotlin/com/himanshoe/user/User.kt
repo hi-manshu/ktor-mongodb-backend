@@ -5,10 +5,11 @@ import org.bson.types.ObjectId
 
 data class User(
     val username: String? = null,
+    @Transient
     val passwordHash: String? = null,
     @BsonId
     val userId: String = ObjectId().toString(),
-    val role: String?=null,
+    val role: String? = null,
     val gender: String? = null,
     val age: Int? = null,
     val firstName: String? = null,
@@ -16,8 +17,12 @@ data class User(
     val userImageUrl: String? = null,
     val createdAt: String? = null,
     val updatedAt: String? = null,
-    val userPosts: List<String>?=null
-)
+    val userPosts: List<String>? = null
+) {
+    fun asResponse(): User {
+        return User(username, null, userId, role, null, null, firstName, lastName, userImageUrl, null, null, null)
+    }
+}
 
 enum class Role(val role: String) {
     Creator("creator"),
