@@ -6,5 +6,7 @@ object PostsConstant {
 
     const val CREATE_POST = "/post"
 
+    const val POST = "/post"
+
     const val LIKE_DISLIKE_POST = "/like-dislike-post"
 }

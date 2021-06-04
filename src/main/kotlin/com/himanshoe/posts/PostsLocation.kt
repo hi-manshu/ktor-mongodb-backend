@@ -11,3 +11,6 @@ class CreatePost
 
 @Location(PostsConstant.LIKE_DISLIKE_POST)
 class LikeDislikePost
+
+@Location(PostsConstant.POST)
+data class IndividualPost(val postId: String)

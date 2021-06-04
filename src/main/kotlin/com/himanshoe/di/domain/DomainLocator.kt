@@ -6,6 +6,7 @@ import com.himanshoe.auth.repository.AuthRepository
 import com.himanshoe.di.repository.RepositoryLocator
 import com.himanshoe.posts.domain.AddLikeDislikeUseCase
 import com.himanshoe.posts.domain.CreatePostUseCase
+import com.himanshoe.posts.domain.FindPostUseCase
 import com.himanshoe.posts.domain.GetPostsUseCase
 import com.himanshoe.posts.repository.PostsRepository
 import com.himanshoe.user.domain.CurrentUserDetailUseCase
@@ -72,6 +73,13 @@ object DomainLocator {
      */
     fun provideCreatePostUseCase(postsRepository: PostsRepository): CreatePostUseCase {
         return CreatePostUseCase(postsRepository)
+    }
+
+    /**
+     * [provideFindPostUseCase] provides the [FindPostUseCase] instance to [DomainProvider]
+     */
+    fun provideFindPostUseCase(postsRepository: PostsRepository): FindPostUseCase {
+        return FindPostUseCase(postsRepository)
     }
 
     /**

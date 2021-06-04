@@ -27,6 +27,7 @@ class PostsRepositoryImpl(
         private const val PLEASE_CHECK_THE_PARAMS = "Please check the query params"
         private const val NOT_AUTHORIZED = "Not authorised"
         private const val ALREADY_LIKED = "Already liked"
+        private const val POST_NOT_FOUND = "Post not found"
         private const val ZERO = 0
         private const val ONE = 1
         private const val USER = "user"
@@ -57,7 +58,7 @@ class PostsRepositoryImpl(
                     .map { it from it }.toTypedArray(),
             )
 
-            val postAggregated = postCollection.aggregate<Post>(
+            val postList = postCollection.aggregate<Post>(
                 skip(skips),
                 limit(count),
                 project(fields),
@@ -67,11 +68,9 @@ class PostsRepositoryImpl(
                 projectBson,
             ).toList()
 
-
-            val response: List<PostList> = postAggregated.map {
-                it.toPostWithUser(userCollection, postAggregated)
+            val response: List<PostList> = postList.map {
+                it.toPostWithUser(userCollection, postList)
             }
-
 
             val totalCount = postCollection.estimatedDocumentCount().toInt()
             val totalPages = (totalCount.div(count)).plus(ONE)
@@ -99,6 +98,15 @@ class PostsRepositoryImpl(
             }
         } else {
             throw exceptionHandler.respondWithUnauthorizedException(NOT_AUTHORIZED)
+        }
+    }
+
+    override suspend fun findPostById(postId: String?): BaseResponse<Any> {
+        val post: Pair<Post?, Boolean> = checkIfPostExistWithPostData(postId)
+        if (post.second) {
+            return SuccessResponse(HttpStatusCode.OK, post.first)
+        } else {
+            throw exceptionHandler.respondWithNotFoundException(POST_NOT_FOUND)
         }
     }
 

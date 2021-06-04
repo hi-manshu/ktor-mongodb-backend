@@ -37,6 +37,12 @@ fun Application.postsRoute(domainProvider: DomainProvider) {
                 val response = domainProvider.provideAddLikeDislikeUseCase().invoke(request)
                 call.respond(response)
             }
+
+            get<IndividualPost> { request ->
+                val postId = request.postId
+                val response = domainProvider.provideFindPostByIdUseCase().invoke(postId)
+                call.respond(response)
+            }
         }
     }
 }

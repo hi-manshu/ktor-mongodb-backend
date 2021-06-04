@@ -5,6 +5,7 @@ import com.himanshoe.auth.domain.LoginUserUseCase
 import com.himanshoe.di.repository.RepositoryProvider
 import com.himanshoe.posts.domain.AddLikeDislikeUseCase
 import com.himanshoe.posts.domain.CreatePostUseCase
+import com.himanshoe.posts.domain.FindPostUseCase
 import com.himanshoe.posts.domain.GetPostsUseCase
 import com.himanshoe.user.domain.CurrentUserDetailUseCase
 import com.himanshoe.user.domain.FindUserByIdUseCase
@@ -43,6 +44,10 @@ class DomainProviderImpl(private val repositoryProvider: RepositoryProvider) : D
 
     override fun provideCreatePostUseCase(): CreatePostUseCase {
         return DomainLocator.provideCreatePostUseCase(repositoryProvider.providePostsRepository())
+    }
+
+    override fun provideFindPostByIdUseCase(): FindPostUseCase {
+        return DomainLocator.provideFindPostUseCase(repositoryProvider.providePostsRepository())
     }
 
     override fun provideAddLikeDislikeUseCase(): AddLikeDislikeUseCase {
