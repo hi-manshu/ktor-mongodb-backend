@@ -10,9 +10,7 @@ interface PostApiService {
 
     suspend fun findPostById(postId: String?): Post?
 
-    suspend fun likePost(postId: String?, likes: List<String>): Boolean?
-
-    suspend fun dislikePost(postId: String?, likes: List<String>): Boolean?
+    suspend fun likeDislikePost(postId: String?, likes: List<String>): Boolean?
 
     suspend fun deletePost(postId: String?): Boolean?
 }

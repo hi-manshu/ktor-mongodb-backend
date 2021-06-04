@@ -5,8 +5,8 @@ import com.himanshoe.user.User
 import com.himanshoe.user.service.UserApiService
 import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.SuccessResponse
-import io.ktor.http.HttpStatusCode
-import java.util.Date
+import io.ktor.http.*
+import java.util.*
 
 class UserRepositoryImpl(
     private val userApiService: UserApiService,
@@ -28,12 +28,7 @@ class UserRepositoryImpl(
     }
 
     override suspend fun currentUser(userId: String?): BaseResponse<Any> {
-        val (user, doExist) = checkIfUsersExistWithUserData(userId)
-        if (userId != null && doExist) {
-            return SuccessResponse(HttpStatusCode.Found, user)
-        } else {
-            throw exceptionHandler.respondWithNotFoundException(USER_NOT_FOUND)
-        }
+        return findUserById(userId)
     }
 
     override suspend fun updateUser(userId: String, user: User): BaseResponse<Any> {

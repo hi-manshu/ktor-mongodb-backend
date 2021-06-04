@@ -79,44 +79,53 @@ class PostsRepositoryImpl(
     }
 
     override suspend fun likeDislikePost(userId: String?, postId: String?, isLiked: Boolean): BaseResponse<Any> {
-        val post = checkIfPostExistWithPostData(postId)
-        if (post.first?.postId == postId && post.second) {
+        val post = checkIfPostExistWithData(postId)
+        return if (post.first?.postId == postId && post.second) {
             if (post.first?.likes?.contains(userId) == true) {
                 if (isLiked) {
                     throw exceptionHandler.respondWithGenericException(ALREADY_LIKED)
                 } else {
-                    val likes: List<String> = post.first?.likes?.toMutableList().apply {
-                        if (userId?.let { this?.contains(it) } == true) {
-                            this?.remove(userId)
-                        }
-                    }?.toList() ?: emptyList()
-
-                    val isDislikedUpdated = postApiService.dislikePost(postId, likes)
-                    if (isDislikedUpdated == true) {
-                        return SuccessResponse(HttpStatusCode.OK, "Disliked Post")
-                    } else {
-                        throw exceptionHandler.respondWithSomethingWentWrongException()
-                    }
+                    userDislikePost(post, userId, postId)
                 }
             } else {
-                val likes: List<String> = post.first?.likes?.toMutableList().apply {
-                    userId?.let { this?.add(it) }
-                }?.toList() ?: emptyList()
-
-                val isLikedUpdated = postApiService.likePost(postId, likes)
-                if (isLikedUpdated == true) {
-                    return SuccessResponse(HttpStatusCode.OK, "Liked")
-                } else {
-                    throw exceptionHandler.respondWithSomethingWentWrongException()
-                }
+                userLikePost(post, userId, postId)
             }
         } else {
             throw exceptionHandler.respondWithSomethingWentWrongException()
         }
     }
 
+    private suspend fun userDislikePost(
+        post: Pair<Post?, Boolean>,
+        userId: String?,
+        postId: String?
+    ): BaseResponse<Any> {
+        val likes: List<String> = post.first?.likes?.toMutableList().apply {
+            if (userId?.let { this?.contains(it) } == true) {
+                this?.remove(userId)
+            }
+        }?.toList() ?: emptyList()
+        return showLikeDislikeStatus(postId, likes)
+    }
+
+    private suspend fun showLikeDislikeStatus(postId: String?, likes: List<String>): BaseResponse<Any> {
+        val isDislikedUpdated = postApiService.likeDislikePost(postId, likes)
+        if (isDislikedUpdated == true) {
+            return SuccessResponse(HttpStatusCode.OK, "Disliked Post")
+        } else {
+            throw exceptionHandler.respondWithSomethingWentWrongException()
+        }
+    }
+
+    private suspend fun userLikePost(post: Pair<Post?, Boolean>, userId: String?, postId: String?): BaseResponse<Any> {
+        val likes: List<String> = post.first?.likes?.toMutableList().apply {
+            userId?.let { this?.add(it) }
+        }?.toList() ?: emptyList()
+        return showLikeDislikeStatus(postId, likes)
+    }
+
     override suspend fun deletePost(userId: String?, postId: String?): BaseResponse<Any> {
-        val postData = checkIfPostExistWithPostData(postId)
+        val postData = checkIfPostExistWithData(postId)
         val post = postData.first
         if (userId == post?.createdBy) {
             val response = postApiService.deletePost(postId)
@@ -126,7 +135,7 @@ class PostsRepositoryImpl(
         }
     }
 
-    private suspend fun checkIfPostExistWithPostData(postId: String?): Pair<Post?, Boolean> {
+    private suspend fun checkIfPostExistWithData(postId: String?): Pair<Post?, Boolean> {
         val post = postApiService.findPostById(postId)
         return Pair(post, post != null)
     }

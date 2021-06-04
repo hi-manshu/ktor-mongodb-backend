@@ -17,9 +17,7 @@ fun main(args: Array<String>): Unit =
 
 private val serviceLocator = ConfigLocator
 
-@Suppress("unused") // Referenced in application.conf
-@kotlin.jvm.JvmOverloads
-fun Application.module(testing: Boolean = false) {
+fun Application.module() {
     ConfigLocator.provideJwtConfig()
     configureStatusPages()
     configureSecurity()

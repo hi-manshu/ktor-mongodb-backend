@@ -7,7 +7,7 @@ import com.himanshoe.util.BaseResponse
 
 /**
  * [CreateUserAuthTokenUseCase] is the UseCase which overrides [BaseUseCase]
- * and invokes to generate UserToken from [AuthRepositorys]
+ * and invokes to generate UserToken from [AuthRepository]
  */
 class CreateUserAuthTokenUseCase(private val authRepository: AuthRepository) : BaseUseCase<AuthRequest, Any> {
 

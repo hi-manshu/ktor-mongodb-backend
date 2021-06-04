@@ -77,15 +77,7 @@ class PostApiServiceImpl(
         return postId?.let { id -> postCollection.findOneById(id) }
     }
 
-    override suspend fun likePost(postId: String?, likes: List<String>): Boolean? {
-        val post = findPostById(postId)
-        val postToBeUpdated = post?.copy(
-            likes = likes
-        )
-        return postToBeUpdated?.let { postId?.let { id -> postCollection.updateOneById(id, it).wasAcknowledged() } }
-    }
-
-    override suspend fun dislikePost(postId: String?, likes: List<String>): Boolean? {
+    override suspend fun likeDislikePost(postId: String?, likes: List<String>): Boolean? {
         val post = findPostById(postId)
         val postToBeUpdated = post?.copy(
             likes = likes
