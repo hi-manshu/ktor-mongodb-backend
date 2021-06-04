@@ -15,7 +15,22 @@ suspend fun Post.toPostWithUser(userCollection: CoroutineCollection<User>, respo
             "$invertedCommas$userId$invertedCommas"
         }
     }.flatten()
-    val fieldsToBeExcluded: Bson = fields(exclude(User::passwordHash, User::role, User::userPosts, User::updatedAt, User::age, User::gender))
+    return this.remodelPostList(likes, userCollection)
+}
+
+suspend fun Post.toPostWithUserDetails(userCollection: CoroutineCollection<User>, likesList: List<String>): PostList {
+    val invertedCommas = '"'
+
+    val likes: List<String> = likesList.map { userId ->
+        "$invertedCommas$userId$invertedCommas"
+    }
+    return this.remodelPostList(likes, userCollection)
+
+}
+
+private suspend fun Post.remodelPostList(likes: List<String>, userCollection: CoroutineCollection<User>): PostList {
+    val fieldsToBeExcluded: Bson =
+        fields(exclude(User::passwordHash, User::role, User::userPosts, User::updatedAt, User::age, User::gender))
     val filter = """{_id : {${'$'}in: $likes}}"""
     val postListUsers: List<User> = userCollection
         .findAndCast<User>(
@@ -23,7 +38,17 @@ suspend fun Post.toPostWithUser(userCollection: CoroutineCollection<User>, respo
         ).projection(fieldsToBeExcluded)
         .toList()
 
-    return PostList(postId, title, post, postListUsers, createdAt, createdBy, updatedAt, shortUrl, isDeleted, comments,createdByUser)
-
+    return PostList(
+        postId,
+        title,
+        post,
+        postListUsers,
+        createdAt,
+        createdBy,
+        updatedAt,
+        shortUrl,
+        isDeleted,
+        comments,
+        createdByUser
+    )
 }
-

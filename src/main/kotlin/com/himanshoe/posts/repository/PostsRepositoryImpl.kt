@@ -4,6 +4,7 @@ import com.himanshoe.base.http.ExceptionHandler
 import com.himanshoe.posts.Post
 import com.himanshoe.posts.PostList
 import com.himanshoe.posts.toPostWithUser
+import com.himanshoe.posts.toPostWithUserDetails
 import com.himanshoe.user.User
 import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.PaginatedResponse
@@ -35,6 +36,20 @@ class PostsRepositoryImpl(
         private const val CREATED_BY_USER = "createdByUser"
         private const val ID = "_id"
         private const val DOLLAR = "$"
+
+        private val lookUpBson = lookup(
+            from = USER,
+            localField = CREATED_BY,
+            foreignField = ID,
+            newAs = CREATED_BY_USER
+        )
+
+        private val projectBson = project(
+            Post::createdByUser from "$DOLLAR$CREATED_BY_USER",
+            *Post::class.memberProperties
+                .filter { it != Post::createdByUser }
+                .map { it from it }.toTypedArray(),
+        )
     }
 
     override suspend fun fetchPosts(page: Int, count: Int): BaseResponse<Any> {
@@ -43,20 +58,6 @@ class PostsRepositoryImpl(
             val skips = page.minus(ONE) * count
 
             val fields: Bson = fields(exclude(Post::isDeleted))
-
-            val lookUpBson = lookup(
-                from = USER,
-                localField = CREATED_BY,
-                foreignField = ID,
-                newAs = CREATED_BY_USER
-            )
-
-            val projectBson = project(
-                Post::createdByUser from "$DOLLAR$CREATED_BY_USER",
-                *Post::class.memberProperties
-                    .filter { it != Post::createdByUser }
-                    .map { it from it }.toTypedArray(),
-            )
 
             val postList = postCollection.aggregate<Post>(
                 skip(skips),
@@ -104,7 +105,8 @@ class PostsRepositoryImpl(
     override suspend fun findPostById(postId: String?): BaseResponse<Any> {
         val post: Pair<Post?, Boolean> = checkIfPostExistWithPostData(postId)
         if (post.second) {
-            return SuccessResponse(HttpStatusCode.OK, post.first)
+            return SuccessResponse(HttpStatusCode.OK,
+                post.first?.likes?.let { post.first?.toPostWithUserDetails(userCollection, it) })
         } else {
             throw exceptionHandler.respondWithNotFoundException(POST_NOT_FOUND)
         }

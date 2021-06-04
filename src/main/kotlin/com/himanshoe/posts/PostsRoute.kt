@@ -22,6 +22,12 @@ fun Application.postsRoute(domainProvider: DomainProvider) {
             call.respond(response)
         }
 
+        get<IndividualPost> { request ->
+            val postId = request.postId
+            val response = domainProvider.provideFindPostByIdUseCase().invoke(postId)
+            call.respond(response)
+        }
+
         authenticate {
 
             post<CreatePost> {
@@ -38,11 +44,7 @@ fun Application.postsRoute(domainProvider: DomainProvider) {
                 call.respond(response)
             }
 
-            get<IndividualPost> { request ->
-                val postId = request.postId
-                val response = domainProvider.provideFindPostByIdUseCase().invoke(postId)
-                call.respond(response)
-            }
+
         }
     }
 }
