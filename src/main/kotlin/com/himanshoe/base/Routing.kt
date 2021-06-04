@@ -19,7 +19,9 @@ fun Application.configureRoutingAndSerialization() {
     install(Locations)
     install(Routing)
     install(ContentNegotiation) {
-        gson()
+        gson {
+            setPrettyPrinting()
+        }
     }
 
     routing {

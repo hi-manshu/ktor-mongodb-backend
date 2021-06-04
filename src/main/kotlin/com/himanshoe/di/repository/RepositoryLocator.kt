@@ -14,9 +14,9 @@ import com.himanshoe.user.service.UserApiService
 
 object RepositoryLocator {
 
-    fun provideAuthRepository(provideUserApiService: UserApiService): AuthRepository {
+    fun provideAuthRepository(userApiService: UserApiService): AuthRepository {
         return AuthRepositoryImpl(
-            provideUserApiService,
+            userApiService,
             JwtConfig.instance,
             ConfigLocator.provideExceptionHandler()
         )
