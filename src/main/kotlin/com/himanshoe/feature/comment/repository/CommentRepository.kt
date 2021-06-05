@@ -7,7 +7,7 @@ interface CommentRepository {
 
     suspend fun fetchComments(page: Int, count: Int): BaseResponse<Any>
 
-    suspend fun createComment(userId: String?, postId: String, comment: Comment): BaseResponse<Any>
+    suspend fun addComment(userId: String?, postId: String, comment: Comment): BaseResponse<Any>
 
-    suspend fun findPostById(commentId: String?): BaseResponse<Any>
+    suspend fun findCommentById(commentId: String?): BaseResponse<Any>
 }

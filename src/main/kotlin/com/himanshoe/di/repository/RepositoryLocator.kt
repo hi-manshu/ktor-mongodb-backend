@@ -1,10 +1,13 @@
 package com.himanshoe.di.repository
 
-import com.himanshoe.feature.auth.repository.AuthRepository
-import com.himanshoe.feature.auth.repository.AuthRepositoryImpl
 import com.himanshoe.base.auth.JwtConfig
 import com.himanshoe.di.ConfigLocator
 import com.himanshoe.di.service.ServiceLocator
+import com.himanshoe.feature.auth.repository.AuthRepository
+import com.himanshoe.feature.auth.repository.AuthRepositoryImpl
+import com.himanshoe.feature.comment.repository.CommentRepository
+import com.himanshoe.feature.comment.repository.CommentRepositoryImpl
+import com.himanshoe.feature.comment.service.CommentApiService
 import com.himanshoe.feature.posts.repository.PostsRepository
 import com.himanshoe.feature.posts.repository.PostsRepositoryImpl
 import com.himanshoe.feature.posts.service.PostApiService
@@ -33,6 +36,13 @@ object RepositoryLocator {
     fun provideUserRepository(userApiService: UserApiService): UserRepository {
         return UserRepositoryImpl(
             userApiService,
+            ConfigLocator.provideExceptionHandler()
+        )
+    }
+
+    fun provideCommentRepository(commentApiService: CommentApiService): CommentRepository {
+        return CommentRepositoryImpl(
+            commentApiService,
             ConfigLocator.provideExceptionHandler()
         )
     }

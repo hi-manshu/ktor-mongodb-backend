@@ -6,7 +6,7 @@ interface CommentApiService {
 
     suspend fun fetchComments(page: Int, count: Int): Pair<List<Comment>, Int>
 
-    suspend fun createComment(userId: String?, postId: String, comment: Comment): Boolean
+    suspend fun addComment(userId: String, postId: String, comment: Comment): Boolean
 
-    suspend fun findPostById(commentId: String?): Comment?
+    suspend fun findCommentById(commentId: String?): Comment?
 }

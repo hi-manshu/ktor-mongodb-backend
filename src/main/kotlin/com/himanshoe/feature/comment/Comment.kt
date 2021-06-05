@@ -7,8 +7,8 @@ import org.bson.types.ObjectId
 data class Comment(
     @BsonId
     val postId: String = ObjectId().toString(),
-    val createdBy: String,
+    val createdBy: String? = null,
     val comment: String,
-    val createdAt: String,
+    val createdAt: String? = null,
     val createdByUser: User? = null
 )

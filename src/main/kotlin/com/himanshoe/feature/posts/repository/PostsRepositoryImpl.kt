@@ -49,15 +49,10 @@ class PostsRepositoryImpl(
 
     override suspend fun createPost(userId: String?, post: Post): BaseResponse<Any> {
         if (userId != null) {
-            val postToBeCreated = Post(title = post.title, post = post.post).copy(
-                createdBy = userId,
-                createdAt = Date().toInstant().toString(),
-                updatedAt = Date().toInstant().toString()
-            )
-            val isCreated = postApiService.createPost(userId, postToBeCreated)
+            val isCreated = postApiService.createPost(userId, post)
 
             if (isCreated) {
-                return SuccessResponse(statusCode = HttpStatusCode.Created, postToBeCreated.asResponse())
+                return SuccessResponse(statusCode = HttpStatusCode.Created, isCreated)
             } else {
                 throw exceptionHandler.respondWithSomethingWentWrongException()
             }
