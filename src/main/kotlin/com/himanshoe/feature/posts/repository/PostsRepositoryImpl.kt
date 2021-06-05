@@ -12,7 +12,6 @@ import com.himanshoe.util.BaseResponse
 import com.himanshoe.util.PaginatedResponse
 import com.himanshoe.util.SuccessResponse
 import io.ktor.http.*
-import java.util.*
 
 class PostsRepositoryImpl(
     private val postApiService: PostApiService,
@@ -36,7 +35,7 @@ class PostsRepositoryImpl(
             val postList: Pair<List<Post>, Int> = postApiService.fetchPosts(page, count)
 
             val response: List<PostList> = postList.first.map {
-                it.toPostWithUser(userApiService, postList.first)
+                it.toPostWithUser(userApiService, commentApiService, postList.first)
             }
 
             val totalCount = postList.second
@@ -68,7 +67,7 @@ class PostsRepositoryImpl(
         if (post != null) {
             return SuccessResponse(
                 HttpStatusCode.OK,
-                post.toPostWithUserDetails(userApiService, post.likes)
+                post.toPostWithUserDetails(userApiService,commentApiService, post.likes)
             )
         } else {
             throw exceptionHandler.respondWithNotFoundException(POST_NOT_FOUND)

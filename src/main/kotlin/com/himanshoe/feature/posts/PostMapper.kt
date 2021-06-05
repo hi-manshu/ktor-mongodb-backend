@@ -1,42 +1,46 @@
 package com.himanshoe.feature.posts
 
+import com.himanshoe.feature.comment.Comment
 import com.himanshoe.feature.comment.service.CommentApiService
 import com.himanshoe.feature.user.User
 import com.himanshoe.feature.user.service.UserApiService
 
-suspend fun Post.toPostWithUser(userApiService: UserApiService, response: List<Post>): PostList {
-    val invertedCommas = '"'
+suspend fun Post.toPostWithUser(
+    userApiService: UserApiService,
+    commentApiService: CommentApiService,
+    response: List<Post>
+): PostList {
 
+    val invertedCommas = '"'
+    val comments = commentApiService.findAllCommentsByPostId(postId)
     val likes: List<String> = response.map { posts ->
         posts.likes.map { userId ->
             "$invertedCommas$userId$invertedCommas"
         }
     }.flatten()
-    return this.remodelPostList(likes, userApiService)
+    return this.remodelPostList(likes, userApiService, comments)
 }
-//suspend fun Post.toPostWithComment(commentApiService: CommentApiService, response: List<Post>): PostList {
-//    val invertedCommas = '"'
-//
-//    commentApiService.fetchComments()
-//
-//    val likes: List<String> = response.map { posts ->
-//        posts.likes.map { userId ->
-//            "$invertedCommas$userId$invertedCommas"
-//        }
-//    }.flatten()
-//    return this.remodelPostList(likes, userApiService)
-//}
 
-suspend fun Post.toPostWithUserDetails(userApiService: UserApiService, likesList: List<String>): PostList {
+suspend fun Post.toPostWithUserDetails(
+    userApiService: UserApiService,
+    commentApiService: CommentApiService,
+    likesList: List<String>
+): PostList {
     val invertedCommas = '"'
+
+    val comments = commentApiService.findAllCommentsByPostId(postId)
 
     val likes: List<String> = likesList.map { userId ->
         "$invertedCommas$userId$invertedCommas"
     }
-    return this.remodelPostList(likes, userApiService)
+    return this.remodelPostList(likes, userApiService, comments)
 }
 
-private suspend fun Post.remodelPostList(userIds: List<String>, userApiService: UserApiService): PostList {
+private suspend fun Post.remodelPostList(
+    userIds: List<String>,
+    userApiService: UserApiService,
+    comments: List<Comment>
+): PostList {
     val users: List<User> = userApiService.populate(userIds)
     return PostList(
         postId,
