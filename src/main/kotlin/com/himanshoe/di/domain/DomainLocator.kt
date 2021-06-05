@@ -1,16 +1,21 @@
 package com.himanshoe.di.domain
 
-import com.himanshoe.auth.domain.CreateUserAuthTokenUseCase
-import com.himanshoe.auth.domain.LoginUserUseCase
-import com.himanshoe.auth.repository.AuthRepository
 import com.himanshoe.di.repository.RepositoryLocator
-import com.himanshoe.posts.domain.*
-import com.himanshoe.posts.repository.PostsRepository
-import com.himanshoe.user.domain.CurrentUserDetailUseCase
-import com.himanshoe.user.domain.FindUserByIdUseCase
-import com.himanshoe.user.domain.GetUserPostsUseCase
-import com.himanshoe.user.domain.UpdateCurrentUserUseCase
-import com.himanshoe.user.repository.UserRepository
+import com.himanshoe.feature.auth.domain.CreateUserAuthTokenUseCase
+import com.himanshoe.feature.auth.domain.LoginUserUseCase
+import com.himanshoe.feature.auth.repository.AuthRepository
+import com.himanshoe.feature.comment.domain.AddCommentUseCase
+import com.himanshoe.feature.comment.domain.GetCommentByIdUseCase
+import com.himanshoe.feature.comment.domain.GetCommentsByPostIdUseCase
+import com.himanshoe.feature.comment.domain.GetCommentsUseCase
+import com.himanshoe.feature.comment.repository.CommentRepository
+import com.himanshoe.feature.posts.domain.*
+import com.himanshoe.feature.posts.repository.PostsRepository
+import com.himanshoe.feature.user.domain.CurrentUserDetailUseCase
+import com.himanshoe.feature.user.domain.FindUserByIdUseCase
+import com.himanshoe.feature.user.domain.GetUserPostsUseCase
+import com.himanshoe.feature.user.domain.UpdateCurrentUserUseCase
+import com.himanshoe.feature.user.repository.UserRepository
 
 /**
  * [DomainLocator] creates a collection of instances of all the domains
@@ -91,6 +96,33 @@ object DomainLocator {
      */
     fun provideDeletePostUseCase(postsRepository: PostsRepository): DeletePostUseCase {
         return DeletePostUseCase(postsRepository)
+    }
+
+    /**
+     * [provideAddCommentUseCase] provides the [AddCommentUseCase] instance to [DomainProvider]
+     */
+    fun provideAddCommentUseCase(commentRepository: CommentRepository): AddCommentUseCase {
+        return AddCommentUseCase(commentRepository)
+    }
+
+    /**
+     * [provideGetCommentByIdUseCase] provides the [AddCommentUseCase] instance to [DomainProvider]
+     */
+    fun provideGetCommentByIdUseCase(commentRepository: CommentRepository): GetCommentByIdUseCase {
+        return GetCommentByIdUseCase(commentRepository)
+    }
+
+    /**
+     * [provideGetCommentByIdUseCase] provides the [AddCommentUseCase] instance to [DomainProvider]
+     */
+    fun provideGetCommentsUseCase(commentRepository: CommentRepository): GetCommentsUseCase {
+        return GetCommentsUseCase(commentRepository)
+    }
+    /**
+     * [provideGetCommentByIdUseCase] provides the [AddCommentUseCase] instance to [DomainProvider]
+     */
+    fun provideGetCommentsByPostIdUseCase(commentRepository: CommentRepository): GetCommentsByPostIdUseCase {
+        return GetCommentsByPostIdUseCase(commentRepository)
     }
 
     /**

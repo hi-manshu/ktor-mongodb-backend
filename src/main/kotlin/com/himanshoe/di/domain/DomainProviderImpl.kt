@@ -1,17 +1,17 @@
 package com.himanshoe.di.domain
 
-import com.himanshoe.auth.domain.CreateUserAuthTokenUseCase
-import com.himanshoe.auth.domain.LoginUserUseCase
 import com.himanshoe.di.repository.RepositoryProvider
-import com.himanshoe.posts.domain.GetPostsUseCase
-import com.himanshoe.posts.domain.CreatePostUseCase
-import com.himanshoe.posts.domain.FindPostUseCase
-import com.himanshoe.posts.domain.DeletePostUseCase
-import com.himanshoe.posts.domain.AddLikeDislikeUseCase
-import com.himanshoe.user.domain.CurrentUserDetailUseCase
-import com.himanshoe.user.domain.FindUserByIdUseCase
-import com.himanshoe.user.domain.GetUserPostsUseCase
-import com.himanshoe.user.domain.UpdateCurrentUserUseCase
+import com.himanshoe.feature.auth.domain.CreateUserAuthTokenUseCase
+import com.himanshoe.feature.auth.domain.LoginUserUseCase
+import com.himanshoe.feature.comment.domain.AddCommentUseCase
+import com.himanshoe.feature.comment.domain.GetCommentByIdUseCase
+import com.himanshoe.feature.comment.domain.GetCommentsByPostIdUseCase
+import com.himanshoe.feature.comment.domain.GetCommentsUseCase
+import com.himanshoe.feature.posts.domain.*
+import com.himanshoe.feature.user.domain.CurrentUserDetailUseCase
+import com.himanshoe.feature.user.domain.FindUserByIdUseCase
+import com.himanshoe.feature.user.domain.GetUserPostsUseCase
+import com.himanshoe.feature.user.domain.UpdateCurrentUserUseCase
 
 class DomainProviderImpl(private val repositoryProvider: RepositoryProvider) : DomainProvider {
 
@@ -57,5 +57,21 @@ class DomainProviderImpl(private val repositoryProvider: RepositoryProvider) : D
 
     override fun provideDeletePostUseCase(): DeletePostUseCase {
         return DomainLocator.provideDeletePostUseCase(repositoryProvider.providePostsRepository())
+    }
+
+    override fun provideGetCommentsUseCase(): GetCommentsUseCase {
+        return DomainLocator.provideGetCommentsUseCase(repositoryProvider.provideCommentRepository())
+    }
+
+    override fun provideGetCommentsByPostIdUseCase(): GetCommentsByPostIdUseCase {
+        return DomainLocator.provideGetCommentsByPostIdUseCase(repositoryProvider.provideCommentRepository())
+    }
+
+    override fun provideGetCommentByIdUseCase(): GetCommentByIdUseCase {
+        return DomainLocator.provideGetCommentByIdUseCase(repositoryProvider.provideCommentRepository())
+    }
+
+    override fun provideAddCommentUseCase(): AddCommentUseCase {
+        return DomainLocator.provideAddCommentUseCase(repositoryProvider.provideCommentRepository())
     }
 }

@@ -1,9 +1,10 @@
 package com.himanshoe.di.repository
 
-import com.himanshoe.auth.repository.AuthRepository
 import com.himanshoe.di.service.ServiceProvider
-import com.himanshoe.posts.repository.PostsRepository
-import com.himanshoe.user.repository.UserRepository
+import com.himanshoe.feature.auth.repository.AuthRepository
+import com.himanshoe.feature.comment.repository.CommentRepository
+import com.himanshoe.feature.posts.repository.PostsRepository
+import com.himanshoe.feature.user.repository.UserRepository
 
 class RepositoryProviderImpl(private val serviceProvider: ServiceProvider) : RepositoryProvider {
 
@@ -20,7 +21,14 @@ class RepositoryProviderImpl(private val serviceProvider: ServiceProvider) : Rep
     override fun providePostsRepository(): PostsRepository {
         return RepositoryLocator.providePostsRepository(
             serviceProvider.providePostApiService(),
-            serviceProvider.provideUserApiService()
+            serviceProvider.provideUserApiService(),
+            serviceProvider.provideCommentApiService()
+        )
+    }
+
+    override fun provideCommentRepository(): CommentRepository {
+        return RepositoryLocator.provideCommentRepository(
+            serviceProvider.provideCommentApiService()
         )
     }
 }

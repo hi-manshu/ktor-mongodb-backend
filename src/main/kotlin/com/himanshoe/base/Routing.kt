@@ -1,17 +1,15 @@
 package com.himanshoe.base
 
-import com.himanshoe.auth.authRoutes
 import com.himanshoe.di.domain.DomainLocator
-import com.himanshoe.posts.postsRoute
-import com.himanshoe.user.userRoutes
-import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.locations.Locations
-import io.ktor.routing.Routing
-import io.ktor.routing.routing
+import com.himanshoe.feature.auth.authRoutes
+import com.himanshoe.feature.comment.commentRoutes
+import com.himanshoe.feature.posts.postsRoute
+import com.himanshoe.feature.user.userRoutes
+import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.gson.*
-
+import io.ktor.locations.*
+import io.ktor.routing.*
 
 val domainLocator = DomainLocator
 
@@ -28,5 +26,6 @@ fun Application.configureRoutingAndSerialization() {
         userRoutes(domainLocator.provideDomainProvider())
         authRoutes(domainLocator.provideDomainProvider())
         postsRoute(domainLocator.provideDomainProvider())
+        commentRoutes(domainLocator.provideDomainProvider())
     }
 }
