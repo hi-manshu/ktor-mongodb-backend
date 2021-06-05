@@ -2,11 +2,11 @@ package com.himanshoe.feature.posts
 
 object PostsConstant {
 
-    const val POSTS = "/posts"
+    const val POSTS = "/v1/posts"
 
-    const val CREATE_POST = "/post"
+    const val CREATE_POST = "/v1/post"
 
-    const val POST = "/post"
+    const val POST = "/v1/post"
 
-    const val LIKE_DISLIKE_POST = "/like-dislike-post"
+    const val LIKE_DISLIKE_POST = "/v1/like-dislike-post"
 }

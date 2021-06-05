@@ -2,7 +2,7 @@ package com.himanshoe.feature.auth
 
 object AuthConstant {
 
-    const val LOGIN = "/login"
+    const val LOGIN = "/v1/login"
 
-    const val REGISTER = "/register"
+    const val REGISTER = "/v1/register"
 }
