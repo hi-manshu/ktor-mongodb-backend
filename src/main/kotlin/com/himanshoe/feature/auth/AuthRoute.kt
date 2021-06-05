@@ -4,6 +4,7 @@ import com.himanshoe.di.domain.DomainProvider
 import com.himanshoe.util.getBodyContent
 import io.ktor.application.*
 import io.ktor.response.*
+import io.ktor.locations.post
 import io.ktor.routing.*
 
 fun Application.authRoutes(domainProvider: DomainProvider) {
