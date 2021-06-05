@@ -9,5 +9,7 @@ interface CommentRepository {
 
     suspend fun addComment(userId: String?, postId: String, comment: Comment): BaseResponse<Any>
 
+    suspend fun findAllCommentsByPostId(postId: String): BaseResponse<Any>
+
     suspend fun findCommentById(commentId: String?): BaseResponse<Any>
 }

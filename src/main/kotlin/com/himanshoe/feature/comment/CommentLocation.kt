@@ -12,4 +12,8 @@ data class AddComment(val postId: String)
 
 @KtorExperimentalLocationsAPI
 @Location(CommentConstant.COMMENT)
+data class FindCommentByPostId(val postId: String)
+
+@KtorExperimentalLocationsAPI
+@Location(CommentConstant.COMMENT)
 data class IndividualComment(val commentId: String)

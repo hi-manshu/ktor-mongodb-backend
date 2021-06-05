@@ -5,6 +5,7 @@ import com.himanshoe.feature.auth.domain.CreateUserAuthTokenUseCase
 import com.himanshoe.feature.auth.domain.LoginUserUseCase
 import com.himanshoe.feature.comment.domain.AddCommentUseCase
 import com.himanshoe.feature.comment.domain.GetCommentByIdUseCase
+import com.himanshoe.feature.comment.domain.GetCommentsByPostIdUseCase
 import com.himanshoe.feature.comment.domain.GetCommentsUseCase
 import com.himanshoe.feature.posts.domain.*
 import com.himanshoe.feature.user.domain.CurrentUserDetailUseCase
@@ -60,6 +61,10 @@ class DomainProviderImpl(private val repositoryProvider: RepositoryProvider) : D
 
     override fun provideGetCommentsUseCase(): GetCommentsUseCase {
         return DomainLocator.provideGetCommentsUseCase(repositoryProvider.provideCommentRepository())
+    }
+
+    override fun provideGetCommentsByPostIdUseCase(): GetCommentsByPostIdUseCase {
+        return DomainLocator.provideGetCommentsByPostIdUseCase(repositoryProvider.provideCommentRepository())
     }
 
     override fun provideGetCommentByIdUseCase(): GetCommentByIdUseCase {

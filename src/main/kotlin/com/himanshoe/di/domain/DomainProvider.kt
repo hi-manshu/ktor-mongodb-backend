@@ -4,6 +4,7 @@ import com.himanshoe.feature.auth.domain.CreateUserAuthTokenUseCase
 import com.himanshoe.feature.auth.domain.LoginUserUseCase
 import com.himanshoe.feature.comment.domain.AddCommentUseCase
 import com.himanshoe.feature.comment.domain.GetCommentByIdUseCase
+import com.himanshoe.feature.comment.domain.GetCommentsByPostIdUseCase
 import com.himanshoe.feature.comment.domain.GetCommentsUseCase
 import com.himanshoe.feature.comment.repository.CommentRepository
 import com.himanshoe.feature.posts.domain.*
@@ -41,4 +42,6 @@ interface DomainProvider {
     fun provideGetCommentByIdUseCase(): GetCommentByIdUseCase
 
     fun provideAddCommentUseCase(): AddCommentUseCase
+
+    fun provideGetCommentsByPostIdUseCase(): GetCommentsByPostIdUseCase
 }

@@ -44,8 +44,12 @@ class CommentApiServiceImpl(private val commentCollection: CoroutineCollection<C
         return Pair(result, commentCollection.estimatedDocumentCount().toInt())
     }
 
+    override suspend fun findAllCommentsByPostId(postId: String): List<Comment> {
+        return commentCollection.find(Comment::postId eq postId).toList()
+    }
+
     override suspend fun addComment(userId: String, postId: String, comment: Comment): Boolean {
-        val commentToBeCreated = Comment(comment = comment.comment).copy(
+        val commentToBeCreated = Comment(comment = comment.comment, postId = postId).copy(
             createdBy = userId,
             createdAt = Date().toInstant().toString(),
         )

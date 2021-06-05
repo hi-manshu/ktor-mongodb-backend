@@ -25,10 +25,15 @@ object RepositoryLocator {
         )
     }
 
-    fun providePostsRepository(postApiService: PostApiService, userApiService: UserApiService): PostsRepository {
+    fun providePostsRepository(
+        postApiService: PostApiService,
+        userApiService: UserApiService,
+        commentApiService: CommentApiService
+    ): PostsRepository {
         return PostsRepositoryImpl(
             postApiService,
             userApiService,
+            commentApiService,
             ConfigLocator.provideExceptionHandler()
         )
     }

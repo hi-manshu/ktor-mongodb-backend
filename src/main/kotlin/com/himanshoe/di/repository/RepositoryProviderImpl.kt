@@ -21,7 +21,8 @@ class RepositoryProviderImpl(private val serviceProvider: ServiceProvider) : Rep
     override fun providePostsRepository(): PostsRepository {
         return RepositoryLocator.providePostsRepository(
             serviceProvider.providePostApiService(),
-            serviceProvider.provideUserApiService()
+            serviceProvider.provideUserApiService(),
+            serviceProvider.provideCommentApiService()
         )
     }
 

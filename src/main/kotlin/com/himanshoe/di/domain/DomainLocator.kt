@@ -6,6 +6,7 @@ import com.himanshoe.feature.auth.domain.LoginUserUseCase
 import com.himanshoe.feature.auth.repository.AuthRepository
 import com.himanshoe.feature.comment.domain.AddCommentUseCase
 import com.himanshoe.feature.comment.domain.GetCommentByIdUseCase
+import com.himanshoe.feature.comment.domain.GetCommentsByPostIdUseCase
 import com.himanshoe.feature.comment.domain.GetCommentsUseCase
 import com.himanshoe.feature.comment.repository.CommentRepository
 import com.himanshoe.feature.posts.domain.*
@@ -116,6 +117,12 @@ object DomainLocator {
      */
     fun provideGetCommentsUseCase(commentRepository: CommentRepository): GetCommentsUseCase {
         return GetCommentsUseCase(commentRepository)
+    }
+    /**
+     * [provideGetCommentByIdUseCase] provides the [AddCommentUseCase] instance to [DomainProvider]
+     */
+    fun provideGetCommentsByPostIdUseCase(commentRepository: CommentRepository): GetCommentsByPostIdUseCase {
+        return GetCommentsByPostIdUseCase(commentRepository)
     }
 
     /**

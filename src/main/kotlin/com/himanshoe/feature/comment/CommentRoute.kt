@@ -30,6 +30,13 @@ fun Application.commentRoutes(domainProvider: DomainProvider) {
                 val response = domainProvider.provideGetCommentByIdUseCase().invoke(commentId)
                 call.respond(response)
             }
+
+            get<FindCommentByPostId> { request ->
+                val postId = request.postId
+                val response = domainProvider.provideGetCommentsByPostIdUseCase().invoke(postId)
+                call.respond(response)
+            }
+
             get<CommentsList> { request ->
                 val response = domainProvider.provideGetCommentsUseCase().invoke(FetchCommentsRequest(request.page, request.count))
                 call.respond(response)

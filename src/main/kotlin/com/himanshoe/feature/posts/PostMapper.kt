@@ -1,5 +1,6 @@
 package com.himanshoe.feature.posts
 
+import com.himanshoe.feature.comment.service.CommentApiService
 import com.himanshoe.feature.user.User
 import com.himanshoe.feature.user.service.UserApiService
 
@@ -13,6 +14,18 @@ suspend fun Post.toPostWithUser(userApiService: UserApiService, response: List<P
     }.flatten()
     return this.remodelPostList(likes, userApiService)
 }
+//suspend fun Post.toPostWithComment(commentApiService: CommentApiService, response: List<Post>): PostList {
+//    val invertedCommas = '"'
+//
+//    commentApiService.fetchComments()
+//
+//    val likes: List<String> = response.map { posts ->
+//        posts.likes.map { userId ->
+//            "$invertedCommas$userId$invertedCommas"
+//        }
+//    }.flatten()
+//    return this.remodelPostList(likes, userApiService)
+//}
 
 suspend fun Post.toPostWithUserDetails(userApiService: UserApiService, likesList: List<String>): PostList {
     val invertedCommas = '"'

@@ -1,6 +1,7 @@
 package com.himanshoe.feature.posts.repository
 
 import com.himanshoe.base.http.ExceptionHandler
+import com.himanshoe.feature.comment.service.CommentApiService
 import com.himanshoe.feature.posts.Post
 import com.himanshoe.feature.posts.PostList
 import com.himanshoe.feature.posts.service.PostApiService
@@ -16,6 +17,7 @@ import java.util.*
 class PostsRepositoryImpl(
     private val postApiService: PostApiService,
     private val userApiService: UserApiService,
+    private val commentApiService: CommentApiService,
     private val exceptionHandler: ExceptionHandler
 ) : PostsRepository {
 

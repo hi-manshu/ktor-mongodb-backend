@@ -54,6 +54,10 @@ class CommentRepositoryImpl(
         }
     }
 
+    override suspend fun findAllCommentsByPostId(postId: String): BaseResponse<Any> {
+        return SuccessResponse(HttpStatusCode.Found, commentApiService.findAllCommentsByPostId(postId))
+    }
+
     override suspend fun findCommentById(commentId: String?): BaseResponse<Any> {
         val comment = commentApiService.findCommentById(commentId)
         if (comment != null) {
