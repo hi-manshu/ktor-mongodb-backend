@@ -37,8 +37,11 @@ class GetPostsUseCaseTest {
     @Test
     fun `should return list of post when given page number and count`() {
         return coroutineRule.runBlockingTest {
+            // given
             `given successful post list`()
+            // when
             val result = getPostsUseCase.invoke(input) as PaginatedResponse<Any>
+            // then
             verify(mockPostRepository).fetchPosts(1, 10)
             MatcherAssert.assertThat(result.data, CoreMatchers.equalTo(dummyListOfPostList()))
         }

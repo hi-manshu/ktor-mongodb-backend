@@ -69,7 +69,7 @@ class PostsRepositoryImplTest {
             postId = "12345",
             title = "my post title",
             post = "my post",
-            createdBy = "12345"
+            createdBy = "67890"
         )
     }
 }
