@@ -9,6 +9,7 @@ This project contains,
 * Advanced Routing using Location
 * Status for Exception handling
 * Pagination
+* Unit Testing
 
 ### Architecture
 
@@ -16,5 +17,4 @@ This project contains,
 
 [WIP] - Keep an eye for updates
 
-- Future plan for Testing 
 - And a lot of cool blogs 
