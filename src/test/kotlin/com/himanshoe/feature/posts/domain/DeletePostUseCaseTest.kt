@@ -4,6 +4,10 @@ import com.himanshoe.MainCoroutineRule
 import com.himanshoe.feature.posts.repository.PostsRepository
 import com.himanshoe.runBlockingTest
 import com.himanshoe.util.SuccessResponse
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import io.ktor.http.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.CoreMatchers.equalTo
@@ -11,10 +15,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
 class DeletePostUseCaseTest {

@@ -8,7 +8,9 @@ import com.himanshoe.feature.posts.service.PostApiService
 import com.himanshoe.feature.user.service.UserApiService
 import com.himanshoe.runBlockingTest
 import com.himanshoe.util.SuccessResponse
-import com.himanshoe.util.TestData
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import io.ktor.http.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.CoreMatchers.equalTo
@@ -16,9 +18,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
 class PostsRepositoryImplTest {
@@ -53,7 +52,7 @@ class PostsRepositoryImplTest {
             // given
             val post = dummyPost()
             // when
-            val result = postsRepository.createPost(dummyPost().postId, post) as SuccessResponse<Any>
+            val result = postsRepository.createPost(dummyPost().createdBy, post) as SuccessResponse<Any>
             // then
             assertThat(result.data, equalTo(true))
         }
@@ -69,7 +68,8 @@ class PostsRepositoryImplTest {
         return Post(
             postId = "12345",
             title = "my post title",
-            post = "my post"
+            post = "my post",
+            createdBy = "12345"
         )
     }
 }

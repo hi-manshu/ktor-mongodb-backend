@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.himanshoe.feature.posts.domain.GetPostsUseCaseTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-06-06T09:55:06" hostname="Himanshus-MacBook-Pro.local" time="0.532">
-  <properties/>
-  <testcase name="should return list of post" classname="com.himanshoe.feature.posts.domain.GetPostsUseCaseTest" time="0.532"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
