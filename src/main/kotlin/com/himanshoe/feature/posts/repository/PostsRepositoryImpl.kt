@@ -9,6 +9,7 @@ import com.himanshoe.feature.posts.toPostWithUser
 import com.himanshoe.feature.posts.toPostWithUserDetails
 import com.himanshoe.feature.user.service.UserApiService
 import com.himanshoe.util.BaseResponse
+import com.himanshoe.util.Logger
 import com.himanshoe.util.PaginatedResponse
 import com.himanshoe.util.SuccessResponse
 import io.ktor.http.*
@@ -49,6 +50,7 @@ class PostsRepositoryImpl(
     }
 
     override suspend fun createPost(userId: String?, post: Post): BaseResponse<Any> {
+        Logger.d(userId)
         if (userId != null) {
             val isCreated = postApiService.createPost(userId, post)
 
@@ -67,7 +69,7 @@ class PostsRepositoryImpl(
         if (post != null) {
             return SuccessResponse(
                 HttpStatusCode.OK,
-                post.toPostWithUserDetails(userApiService,commentApiService, post.likes)
+                post.toPostWithUserDetails(userApiService, commentApiService, post.likes)
             )
         } else {
             throw exceptionHandler.respondWithNotFoundException(POST_NOT_FOUND)
