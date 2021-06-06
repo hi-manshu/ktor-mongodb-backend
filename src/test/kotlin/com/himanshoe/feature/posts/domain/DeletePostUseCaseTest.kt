@@ -61,13 +61,11 @@ class DeletePostUseCaseTest {
 
     private suspend fun `given successful delete post`() {
         val successResponse = SuccessResponse<Any>(HttpStatusCode.OK, true)
-        whenever(mockPostsRepository.deletePost(any(), any()))
-            .thenReturn(successResponse)
+        whenever(mockPostsRepository.deletePost(any(), any())).thenReturn(successResponse)
     }
 
     private suspend fun `given unsuccessful delete post`() {
         val successResponse = SuccessResponse<Any>(HttpStatusCode.OK, false)
-        whenever(mockPostsRepository.deletePost(any(), any()))
-            .thenReturn(successResponse)
+        whenever(mockPostsRepository.deletePost(any(), any())).thenReturn(successResponse)
     }
 }

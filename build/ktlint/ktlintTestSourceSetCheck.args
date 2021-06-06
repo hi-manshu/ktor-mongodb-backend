@@ -1,4 +1,0 @@
---reporter=plain
---color
---reporter=plain,output=/Users/himanshusingh/Documents/code/ktor-backend/build/reports/ktlint/ktlintTestSourceSetCheck/ktlintTestSourceSetCheck.txt
-"src/test/kotlin/com/himanshoe/ApplicationTest.kt"
