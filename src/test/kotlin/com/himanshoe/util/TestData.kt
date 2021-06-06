@@ -1,6 +1,7 @@
 package com.himanshoe.util
 
 import com.himanshoe.feature.posts.Post
+import com.himanshoe.feature.posts.PostList
 
 object TestData {
 
@@ -19,4 +20,6 @@ object TestData {
     fun dummyPostId(): String {
         return dummyPost().postId
     }
+
+
 }

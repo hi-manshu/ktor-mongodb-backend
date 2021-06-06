@@ -3,11 +3,11 @@ package com.himanshoe.feature.posts.domain
 import com.himanshoe.MainCoroutineRule
 import com.himanshoe.feature.posts.repository.PostsRepository
 import com.himanshoe.runBlockingTest
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 @ExperimentalCoroutinesApi
 class FindPostUseCaseTest {

@@ -7,12 +7,8 @@ import com.himanshoe.feature.posts.Post
 import com.himanshoe.feature.posts.service.PostApiService
 import com.himanshoe.feature.user.service.UserApiService
 import com.himanshoe.runBlockingTest
-import com.himanshoe.util.Logger
 import com.himanshoe.util.SuccessResponse
 import com.himanshoe.util.TestData
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import io.ktor.http.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.CoreMatchers.equalTo
@@ -20,7 +16,9 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyString
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
 class PostsRepositoryImplTest {
@@ -28,13 +26,13 @@ class PostsRepositoryImplTest {
     @get:Rule
     var coroutineRule = MainCoroutineRule()
 
-    private val mockPostApiService by lazy { mock<PostApiService>() }
+    private val mockPostApiService = mock<PostApiService>()
 
-    private val mockUserApiService by lazy { mock<UserApiService>() }
+    private val mockUserApiService = mock<UserApiService>()
 
-    private val mockCommentApiService by lazy { mock<CommentApiService>() }
+    private val mockCommentApiService = mock<CommentApiService>()
 
-    private val mockExceptionHandler by lazy { mock<ExceptionHandler>() }
+    private val mockExceptionHandler = mock<ExceptionHandler>()
 
     private lateinit var postsRepository: PostsRepositoryImpl
 
@@ -53,9 +51,9 @@ class PostsRepositoryImplTest {
         return coroutineRule.runBlockingTest {
             `given successful create post`()
             // given
-            val post = TestData.dummyPost()
+            val post = dummyPost()
             // when
-            val result = postsRepository.createPost(TestData.dummyPostId(), post) as SuccessResponse<Any>
+            val result = postsRepository.createPost(dummyPost().postId, post) as SuccessResponse<Any>
             // then
             assertThat(result.data, equalTo(true))
         }
@@ -65,5 +63,13 @@ class PostsRepositoryImplTest {
         val response = SuccessResponse<Any>(HttpStatusCode.Created, true)
         whenever(postsRepository.createPost(any(), any()))
             .thenReturn(response)
+    }
+
+    private fun dummyPost(): Post {
+        return Post(
+            postId = "12345",
+            title = "my post title",
+            post = "my post"
+        )
     }
 }
