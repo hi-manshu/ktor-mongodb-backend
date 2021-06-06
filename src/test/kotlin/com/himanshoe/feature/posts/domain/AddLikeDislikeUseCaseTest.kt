@@ -50,7 +50,7 @@ class AddLikeDislikeUseCaseTest {
         return coroutineRule.runBlockingTest {
             `given a post should add like successfully`()
             // given
-            val input = Triple("12345", "67890", true)
+            val input = Triple("12345", "67890", false)
             // when
             val result = addLikeDislikeUseCase.invoke(input) as SuccessResponse<Any>
             // then

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.himanshoe.feature.posts.domain.AddLikeDislikeUseCaseTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-06-06T17:44:37" hostname="Himanshus-MacBook-Pro.local" time="0.528">
+<testsuite name="com.himanshoe.feature.posts.domain.AddLikeDislikeUseCaseTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-06-06T17:46:03" hostname="Himanshus-MacBook-Pro.local" time="0.549">
   <properties/>
-  <testcase name="should add dislike successfully" classname="com.himanshoe.feature.posts.domain.AddLikeDislikeUseCaseTest" time="0.526"/>
-  <testcase name="should add like successfully" classname="com.himanshoe.feature.posts.domain.AddLikeDislikeUseCaseTest" time="0.002"/>
+  <testcase name="should add dislike successfully" classname="com.himanshoe.feature.posts.domain.AddLikeDislikeUseCaseTest" time="0.545"/>
+  <testcase name="should add like successfully" classname="com.himanshoe.feature.posts.domain.AddLikeDislikeUseCaseTest" time="0.003"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
