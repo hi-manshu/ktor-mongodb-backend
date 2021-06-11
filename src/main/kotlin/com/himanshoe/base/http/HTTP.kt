@@ -1,4 +1,4 @@
-package com.himanshoe.base
+package com.himanshoe.base.http
 
 import io.ktor.application.*
 import io.ktor.features.*

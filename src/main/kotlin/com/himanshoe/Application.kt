@@ -1,6 +1,6 @@
 package com.himanshoe
 
-import com.himanshoe.base.configureHTTP
+import com.himanshoe.base.http.configureHTTP
 import com.himanshoe.base.configureRoutingAndSerialization
 import com.himanshoe.base.configureSecurity
 import com.himanshoe.base.configureStatusPages

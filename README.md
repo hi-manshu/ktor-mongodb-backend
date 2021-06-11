@@ -15,6 +15,11 @@ This project contains,
 
 <img src=https://github.com/hi-manshu/ktor-mongodb-backend/blob/master/imgs/arch-diagram.png>
 
+### Blogs
+This contains the content for Kotlin + Ktor + Mongo blog series.
+1. [Kotlin for backend](https://himanshoe.com/kotlin-for-backend)
+2. [Kotlin backend with Ktor: 101](https://himanshoe.com/ktor-basics-101)
+
 [WIP] - Keep an eye for updates
 
 - And a lot of cool blogs 
