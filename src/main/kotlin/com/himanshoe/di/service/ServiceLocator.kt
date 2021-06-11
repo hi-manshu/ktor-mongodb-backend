@@ -1,5 +1,6 @@
 package com.himanshoe.di.service
 
+import com.himanshoe.base.database.redis.RedisClient
 import com.himanshoe.feature.comment.Comment
 import com.himanshoe.feature.comment.service.CommentApiService
 import com.himanshoe.feature.comment.service.CommentApiServiceImpl
@@ -17,11 +18,11 @@ object ServiceLocator {
         return PostApiServiceImpl(postCollection)
     }
 
-    fun provideUserApiService(userCollection: CoroutineCollection<User>): UserApiService {
-        return UserApiServiceImpl(userCollection)
+    fun provideUserApiService(userCollection: CoroutineCollection<User>, redisClient: RedisClient): UserApiService {
+        return UserApiServiceImpl(userCollection, redisClient)
     }
 
-    fun provideCommentApiService(commentCollection: CoroutineCollection<Comment>):CommentApiService{
+    fun provideCommentApiService(commentCollection: CoroutineCollection<Comment>): CommentApiService {
         return CommentApiServiceImpl(commentCollection)
     }
 

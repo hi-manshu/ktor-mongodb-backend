@@ -42,6 +42,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("org.litote.kmongo:kmongo-coroutine:$kmongo_version")
     implementation("commons-codec:commons-codec:1.14")
+    implementation("redis.clients:jedis:3.6.0")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.3")

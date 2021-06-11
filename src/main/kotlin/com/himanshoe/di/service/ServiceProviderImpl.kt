@@ -1,5 +1,6 @@
 package com.himanshoe.di.service
 
+import com.himanshoe.di.RedisLocator
 import com.himanshoe.di.database.DatabaseLocator
 import com.himanshoe.feature.comment.service.CommentApiService
 import com.himanshoe.feature.posts.service.PostApiService
@@ -12,7 +13,10 @@ class ServiceProviderImpl : ServiceProvider {
     }
 
     override fun provideUserApiService(): UserApiService {
-        return ServiceLocator.provideUserApiService(DatabaseLocator.provideDatabase().userCollection)
+        return ServiceLocator.provideUserApiService(
+            DatabaseLocator.provideDatabase().userCollection,
+            RedisLocator.provideRedisClient()
+        )
     }
 
     override fun provideCommentApiService(): CommentApiService {

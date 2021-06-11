@@ -1,5 +1,6 @@
 package com.himanshoe.base
 
+import com.himanshoe.base.database.redis.RedisClient
 import com.himanshoe.di.domain.DomainLocator
 import com.himanshoe.feature.auth.authRoutes
 import com.himanshoe.feature.comment.commentRoutes
@@ -13,7 +14,7 @@ import io.ktor.routing.*
 
 val domainLocator = DomainLocator
 
-fun Application.configureRoutingAndSerialization() {
+fun Application.configureRoutingAndSerialization(redisClient: RedisClient) {
     install(Locations)
     install(Routing)
     install(ContentNegotiation) {
@@ -22,7 +23,7 @@ fun Application.configureRoutingAndSerialization() {
 
     routing {
         userRoutes(domainLocator.provideDomainProvider())
-        authRoutes(domainLocator.provideDomainProvider())
+        authRoutes(domainLocator.provideDomainProvider(),redisClient)
         postsRoute(domainLocator.provideDomainProvider())
         commentRoutes(domainLocator.provideDomainProvider())
     }
